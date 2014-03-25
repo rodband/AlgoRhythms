@@ -4,12 +4,15 @@
     Public boolMute As Boolean
     Public boolSolo As Boolean
     Public boolSelected As Boolean
-    Public Sub New(ByVal tN As Integer, ByVal sN As String, ByRef m As Boolean, ByRef s As Boolean, ByRef sel As Boolean)
+    Public objMeasureManager As clsMeasureManager
+
+    Public Sub New(ByVal tN As Integer, ByVal sN As String, ByVal m As Boolean, ByVal s As Boolean, ByVal sel As Boolean, ByVal mm As clsMeasureManager)
         strTrackNumber = tN
         strSoundName = sN
         boolMute = m
         boolSolo = s
         boolSelected = sel
+        objMeasureManager = mm
     End Sub
 
     Public Property trackNumber As String

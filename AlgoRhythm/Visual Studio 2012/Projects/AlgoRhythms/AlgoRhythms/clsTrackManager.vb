@@ -13,7 +13,10 @@
     End Sub
     'procedure that will save any modified changes to collection (opposite of fill collection as discussed)
     Public Sub updateCollection(ByRef colTrack As Collection)
-
+        colTracks.Clear()
+        For Each track In colTrack
+            colTracks.Add(track)
+        Next
     End Sub
     'handles setting boolMute for when mute button is clicked
     Public Sub muteClicked(ByRef boolMute As Boolean)

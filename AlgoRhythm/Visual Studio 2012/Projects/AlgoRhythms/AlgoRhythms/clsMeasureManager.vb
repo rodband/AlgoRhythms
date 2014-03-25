@@ -8,9 +8,15 @@
     'finish this
     Public Sub fillCollection(ByRef colMeasure As Collection)
         colMeasure.Clear()
-
         For Each measure In colMeasures
             colMeasure.Add(measure)
+        Next
+    End Sub
+
+    Public Sub updateCollection(ByRef colMeasure As Collection)
+        colMeasures.Clear()
+        For Each measure In colMeasure
+            colMeasures.Add(measure)
         Next
     End Sub
     'sets active beat accordingly when beat is clicked (do we need to pass the index of the beat clicked as well as the boolean array?)

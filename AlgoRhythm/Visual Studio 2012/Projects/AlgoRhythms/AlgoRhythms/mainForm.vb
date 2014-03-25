@@ -5,15 +5,14 @@ Public Class mainForm
     Dim numMeasures As Integer                          'Keeps track of the current unmber of measures
     Dim selectedTrack As Integer                        'Keeps track of which track is selected on the form
     Dim trackManager As New clsTrackManager
+    Dim measureManager As New clsMeasureManager
     Dim colTrack As New Collection                      'current collection of tracks
     Dim colPBTrack As New Collection                    'current collection of track pictureboxes
     Dim colLBLTrack As New Collection                   'current collection of track labels
     Dim colPBMute As New Collection                     'current collection of muteButtons
     Dim colPBSolo As New Collection                     'current collection of soloButtons
-    Dim scrollMeasureBox As New PictureBox              'Forces a scroll bar to appear on pnlMeasures
-    Dim measureManager As New clsMeasureManager
     Dim colMeasures As New Collection                   'current collection of measures
-
+    Dim scrollMeasureBox As New PictureBox              'Forces a scroll bar to appear on pnlMeasures
 
     Private Sub mainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'On load, 1 track is added, including 10 measures and its mixer componant
@@ -68,7 +67,8 @@ Public Class mainForm
         colPBSolo.Add(pbSolo)                           'add solo button to colPBSolo collection
         AddHandler pbSolo.Click, AddressOf pbSolo_Click 'Links the picture box to the pbSolo_Click handler
 
-        Dim track As New clsTrack(numTracks, "null", False, False, False)
+        Dim objMeasureManager As New clsMeasureManager
+        Dim track As New clsTrack(numTracks, "null", False, False, False, objMeasureManager)
         trackManager.addTrack(track)
 
         scrollMeasureBox.Name = "ScrollMeasureBox"      'Sets the name of the picture box that enables the scroll bar in pnlMeasures
@@ -100,6 +100,8 @@ Public Class mainForm
 
         changeX = 0
         For j As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
+            Dim objMeasure As New clsMeasure(False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
+            track.objMeasureManager.addMeasure(objMeasure)
             objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString      'Sets objName to the desired object name
             measurePanel2.Name = objName.ToString                                    'Sets the object name to be objName
             For i As Integer = 1 To 16 Step 4                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
@@ -259,7 +261,8 @@ Public Class mainForm
         colPBSolo.Add(pbSolo)
         AddHandler pbSolo.Click, AddressOf pbSolo_Click
 
-        Dim track As New clsTrack(numTracks, "null", False, False, False)
+        Dim objMeasureManager As New clsMeasureManager
+        Dim track As New clsTrack(numTracks, "null", False, False, False, objMeasureManager)
         trackManager.addTrack(track)
 
         Dim measurePanel As New ShapeContainer
@@ -268,6 +271,8 @@ Public Class mainForm
 
         'add number of measures to the track (visually)
         For j As Integer = 1 To numMeasures
+            Dim objMeasure As New clsMeasure(False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
+            track.objMeasureManager.addMeasure(objMeasure)
             objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString
             measurePanel.Name = objName.ToString
 

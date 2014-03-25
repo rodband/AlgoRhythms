@@ -75,6 +75,7 @@
     <Compile Include="clsFileManager.vb" />
     <Compile Include="clsInstrument.vb" />
     <Compile Include="clsInstrumentManager.vb" />
+    <Compile Include="clsPlayhead.vb" />
     <Compile Include="clsTrack.vb" />
     <Compile Include="clsTrackManager.vb" />
     <Compile Include="clsMeasure.vb" />
