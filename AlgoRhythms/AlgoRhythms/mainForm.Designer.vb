@@ -40,10 +40,10 @@ Partial Class mainForm
         Me.lblDeleteTrack = New System.Windows.Forms.Label()
         Me.pnlTrackList = New System.Windows.Forms.Panel()
         Me.pnlMeasures = New System.Windows.Forms.Panel()
-        Me.pbStop = New System.Windows.Forms.PictureBox()
+        Me.pbPlay = New System.Windows.Forms.PictureBox()
         Me.pbStepForward = New System.Windows.Forms.PictureBox()
         Me.pbStepBack = New System.Windows.Forms.PictureBox()
-        Me.pbPlayPause = New System.Windows.Forms.PictureBox()
+        Me.pbStop = New System.Windows.Forms.PictureBox()
         Me.lblAddTrack = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
@@ -62,10 +62,10 @@ Partial Class mainForm
         Me.MenuStrip1.SuspendLayout()
         Me.gbInstrumentSelector.SuspendLayout()
         Me.gbMain.SuspendLayout()
-        CType(Me.pbStop, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbPlay, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbPlayPause, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbStop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel5.SuspendLayout()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.SuspendLayout()
@@ -194,10 +194,10 @@ Partial Class mainForm
         Me.gbMain.Controls.Add(Me.lblDeleteTrack)
         Me.gbMain.Controls.Add(Me.pnlTrackList)
         Me.gbMain.Controls.Add(Me.pnlMeasures)
-        Me.gbMain.Controls.Add(Me.pbStop)
+        Me.gbMain.Controls.Add(Me.pbPlay)
         Me.gbMain.Controls.Add(Me.pbStepForward)
         Me.gbMain.Controls.Add(Me.pbStepBack)
-        Me.gbMain.Controls.Add(Me.pbPlayPause)
+        Me.gbMain.Controls.Add(Me.pbStop)
         Me.gbMain.Controls.Add(Me.lblAddTrack)
         Me.gbMain.Controls.Add(Me.ShapeContainer1)
         Me.gbMain.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -236,15 +236,15 @@ Partial Class mainForm
         Me.pnlMeasures.Size = New System.Drawing.Size(563, 337)
         Me.pnlMeasures.TabIndex = 13
         '
-        'pbStop
+        'pbPlay
         '
-        Me.pbStop.BackColor = System.Drawing.Color.Transparent
-        Me.pbStop.Image = CType(resources.GetObject("pbStop.Image"), System.Drawing.Image)
-        Me.pbStop.Location = New System.Drawing.Point(321, 358)
-        Me.pbStop.Name = "pbStop"
-        Me.pbStop.Size = New System.Drawing.Size(50, 48)
-        Me.pbStop.TabIndex = 6
-        Me.pbStop.TabStop = False
+        Me.pbPlay.BackColor = System.Drawing.Color.Transparent
+        Me.pbPlay.Image = CType(resources.GetObject("pbPlay.Image"), System.Drawing.Image)
+        Me.pbPlay.Location = New System.Drawing.Point(321, 358)
+        Me.pbPlay.Name = "pbPlay"
+        Me.pbPlay.Size = New System.Drawing.Size(50, 48)
+        Me.pbPlay.TabIndex = 6
+        Me.pbPlay.TabStop = False
         '
         'pbStepForward
         '
@@ -267,15 +267,15 @@ Partial Class mainForm
         Me.pbStepBack.TabIndex = 4
         Me.pbStepBack.TabStop = False
         '
-        'pbPlayPause
+        'pbStop
         '
-        Me.pbPlayPause.BackColor = System.Drawing.Color.Transparent
-        Me.pbPlayPause.Image = CType(resources.GetObject("pbPlayPause.Image"), System.Drawing.Image)
-        Me.pbPlayPause.Location = New System.Drawing.Point(377, 358)
-        Me.pbPlayPause.Name = "pbPlayPause"
-        Me.pbPlayPause.Size = New System.Drawing.Size(50, 48)
-        Me.pbPlayPause.TabIndex = 3
-        Me.pbPlayPause.TabStop = False
+        Me.pbStop.BackColor = System.Drawing.Color.Transparent
+        Me.pbStop.Image = CType(resources.GetObject("pbStop.Image"), System.Drawing.Image)
+        Me.pbStop.Location = New System.Drawing.Point(377, 358)
+        Me.pbStop.Name = "pbStop"
+        Me.pbStop.Size = New System.Drawing.Size(50, 48)
+        Me.pbStop.TabIndex = 3
+        Me.pbStop.TabStop = False
         '
         'lblAddTrack
         '
@@ -310,9 +310,9 @@ Partial Class mainForm
         '
         'btnAddMeasure
         '
-        Me.btnAddMeasure.Location = New System.Drawing.Point(874, 611)
+        Me.btnAddMeasure.Location = New System.Drawing.Point(806, 553)
         Me.btnAddMeasure.Name = "btnAddMeasure"
-        Me.btnAddMeasure.Size = New System.Drawing.Size(92, 23)
+        Me.btnAddMeasure.Size = New System.Drawing.Size(244, 23)
         Me.btnAddMeasure.TabIndex = 14
         Me.btnAddMeasure.Text = "Add Measure"
         Me.btnAddMeasure.UseVisualStyleBackColor = True
@@ -428,10 +428,10 @@ Partial Class mainForm
         Me.gbInstrumentSelector.ResumeLayout(False)
         Me.gbMain.ResumeLayout(False)
         Me.gbMain.PerformLayout()
-        CType(Me.pbStop, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPlay, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbPlayPause, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbStop, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel5.ResumeLayout(False)
         Me.ContextMenuStrip1.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -457,10 +457,10 @@ Partial Class mainForm
     Friend WithEvents lstSounds As System.Windows.Forms.ListBox
     Friend WithEvents pnlTrackList As System.Windows.Forms.Panel
     Friend WithEvents lblAddTrack As System.Windows.Forms.Label
-    Friend WithEvents pbStop As System.Windows.Forms.PictureBox
+    Friend WithEvents pbPlay As System.Windows.Forms.PictureBox
     Friend WithEvents pbStepForward As System.Windows.Forms.PictureBox
     Friend WithEvents pbStepBack As System.Windows.Forms.PictureBox
-    Friend WithEvents pbPlayPause As System.Windows.Forms.PictureBox
+    Friend WithEvents pbStop As System.Windows.Forms.PictureBox
     Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents DeleteTrackToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents tmrPlayHead As System.Windows.Forms.Timer

@@ -1,5 +1,5 @@
 ﻿Public Class clsTrack
-    Public strTrackNumber As String
+    Public strTrackNumber As Integer
     Public strSoundName As String
     Public boolMute As Boolean
     Public boolSolo As Boolean
@@ -15,11 +15,11 @@
         objMeasureManager = mm
     End Sub
 
-    Public Property trackNumber As String
+    Public Property trackNumber As Integer
         Get
             Return strTrackNumber
         End Get
-        Set(value As String)
+        Set(value As Integer)
             strTrackNumber = value
         End Set
     End Property
