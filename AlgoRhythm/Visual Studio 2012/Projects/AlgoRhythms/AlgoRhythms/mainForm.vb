@@ -12,6 +12,7 @@ Public Class mainForm
     Dim colPBMute As New Collection                     'current collection of muteButtons
     Dim colPBSolo As New Collection                     'current collection of soloButtons
     Dim colMeasures As New Collection
+    Dim colPlayHead As New Collection
     Dim scrollMeasureBox As New PictureBox              'Forces a scroll bar to appear on pnlMeasures
 
     Private Sub mainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -84,7 +85,7 @@ Public Class mainForm
 
         'CREATE PLAYHEAD
         For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
-            objName = "pnlTrack" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
+            objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
             measurePanel1.Name = objName.ToString                                    'Sets the object name to be objName
             For m As Integer = 1 To 16 Step 1                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
                 objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString + "Beat" + m.ToString    'Names each rectangle properly
@@ -93,10 +94,11 @@ Public Class mainForm
                 rectangle.Parent = measurePanel1                                     'Sets the rectangles parent to be the shape container created earlier
                 rectangle.SetBounds(1 * changeX, 10, 5, 18)                        'Sets the size and lcoation of the rectangle
                 changeX = changeX + 5                                              'Increases changeX by 20 so the next rectangle is placed correctly
+                rectangle.FillStyle = FillStyle.Solid
                 rectangle.BorderColor = Color.FromArgb(101, 165, 210)                            'Sets the boarder color to be orange, this will change depending on the selected instrument
                 rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
                 rectangle.BringToFront()                                            'Brings the rectangle to the front
-                AddHandler rectangle.GotFocus, AddressOf active
+                colPlayHead.Add(rectangle)
             Next
         Next
 
@@ -116,7 +118,7 @@ Public Class mainForm
                 rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orange, this will change depending on the selected instrument
                 rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
                 rectangle.BringToFront()                                            'Brings the rectangle to the front
-                AddHandler rectangle.Click, AddressOf rectBeat_Click
+                AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
             Next
         Next
         numMeasures = 10                                'Sets numMeasures to reflect the current number of measures
@@ -289,7 +291,7 @@ Public Class mainForm
                 rectangle.BorderColor = Color.DarkOrange
                 rectangle.FillColor = Color.Transparent
                 rectangle.BringToFront()
-                AddHandler rectangle.Click, AddressOf rectBeat_Click
+                AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
             Next
         Next
 
@@ -340,7 +342,7 @@ Public Class mainForm
         Dim changeX As Integer = (80 * numMeasures) 'Sets changeX to be the current number of measures * 80, so that any new rectangles are added in the correct location
 
         For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
-            objName = "pnlTrack" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
+            objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
             measurePanel1.Name = objName.ToString                                    'Sets the object name to be objName
             For m As Integer = 1 To 16 Step 1                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
                 objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString + "Beat" + m.ToString    'Names each rectangle properly
@@ -349,9 +351,11 @@ Public Class mainForm
                 rectangle.Parent = measurePanel1                                     'Sets the rectangles parent to be the shape container created earlier
                 rectangle.SetBounds(1 * changeX, 10, 5, 18)                        'Sets the size and lcoation of the rectangle
                 changeX = changeX + 5                                              'Increases changeX by 20 so the next rectangle is placed correctly
+                rectangle.FillStyle = FillStyle.Solid
                 rectangle.BorderColor = Color.FromArgb(101, 165, 210)                            'Sets the boarder color to be orange, this will change depending on the selected instrument
                 rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
                 rectangle.BringToFront()                                            'Brings the rectangle to the front
+                colPlayHead.Add(rectangle)
             Next
         Next
 
@@ -375,7 +379,8 @@ Public Class mainForm
                     rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orang, this will change depending on the selected instrument type
                     rectangle.FillColor = Color.Transparent                             'Sets the background to be transparent
                     rectangle.BringToFront()                                            'Brings the rectangle to the front
-                    AddHandler rectangle.Click, AddressOf rectBeat_Click
+                    AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+
                 Next
                 changeX = changeX - 80              'Resets changeX back 80 so account for the next track
             Next
@@ -464,69 +469,190 @@ Public Class mainForm
 
     End Sub
     'handles the visual filling/unfilling of a reactangle
-    Private Sub rectBeat_Click(sender As Object, e As EventArgs)
+    Private Sub rectBeat_Click(sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         Dim temp As String
         Dim tempTrack As String
         Dim tempMeasure As String
         Dim tempBeat As String
+
+
         temp = sender.name.ToString
         tempTrack = temp
         tempMeasure = temp
         tempBeat = temp
+        If (e.Button = Windows.Forms.MouseButtons.Left) Then
+            If (My.Computer.Keyboard.ShiftKeyDown) Then
+                If (sender.width > 10) Then
+                    Dim newBeatName As String
+                    Dim xCoord As Integer
+                    Dim yCoord As Integer
+                    Dim tempWidth As Integer
 
-        tempTrack = tempTrack.Substring(8, 1)
-        If Integer.TryParse(tempMeasure.Substring(16, 1), CInt(tempMeasure.Substring(16, 1))) Then
-            tempMeasure = tempMeasure.Substring(16, 1)
-        ElseIf Integer.TryParse(tempMeasure.Substring(16, 2), CInt(tempMeasure.Substring(16, 2))) Then
-            tempMeasure = tempMeasure.Substring(16, 2)
-        ElseIf Integer.TryParse(tempMeasure.Substring(16, 3), CInt(tempMeasure.Substring(16, 3))) Then
-            tempMeasure = tempMeasure.Substring(16, 3)
-        End If
+                    xCoord = sender.left
+                    yCoord = sender.bottom
+                    tempWidth = sender.width
+                    sender.width = (tempWidth / 2)
 
-        For Each track In colTrack
-            If track.TrackNumber = CInt(tempTrack) Then
-                track.objMeasureManager.fillCollection(colMeasures)
-                For Each measure In colMeasures
-                    If measure.measureNumber = tempMeasure.Trim Then
-                        If tempMeasure.Length = 1 Then
-                            tempBeat = temp.Substring(21)
-                            If measure.beat(tempBeat) = False Then
-                                measure.beat(tempBeat) = True
-                            Else
-                                measure.beat(tempBeat) = False
-                            End If
-                        ElseIf tempMeasure.Length = 2 Then
-                            tempBeat = temp.Substring(22)
-                            If measure.beat(tempBeat) = False Then
-                                measure.beat(tempBeat) = True
-                            Else
-                                measure.beat(tempBeat) = False
-                            End If
-                        ElseIf tempMeasure.Length = 3 Then
-                            tempBeat = temp.Substring(23)
-                            If measure.beat(tempBeat) = False Then
-                                measure.beat(tempBeat) = True
-                            Else
-                                measure.beat(tempBeat) = False
-                            End If
-                        End If
-                        If measure.beat(tempBeat) = True Then
-                            sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
-                            sender.FillColor = Color.DarkOrange                                     'set appropriate color
-                            sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
-                            sender.BringToFront()                                                   'bring object back to front
-                        Else
-                            sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
-                            sender.FillColor = Color.Transparent                                    'set appropriate color
-                            sender.BorderColor = Color.DarkOrange                                   'set border color to color of panel's background (make it transparent)
-                            sender.BringToFront()                                                   'bring object back to front
-                        End If
+                    Dim rectangle As New RectangleShape
+                    newBeatName = temp.Substring(temp.Length - 1)
+                    temp = (temp.Substring(0, temp.Length - 1) & (CInt(newBeatName) + 2))
+                    rectangle.Name = temp
+                    rectangle.SetBounds(xCoord + (tempWidth / 2), yCoord - sender.height, tempWidth / 2, sender.height)
+                    rectangle.Parent = sender.parent
+                    rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orang, this will change depending on the selected instrument type
+                    rectangle.FillColor = Color.Transparent                             'Sets the background to be transparent
+                    rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
 
+                ElseIf (sender.width > 5) Then
+                    Dim newBeatName As String
+                    Dim xCoord As Integer
+                    Dim yCoord As Integer
+                    Dim tempWidth As Integer
+
+                    xCoord = sender.left
+                    yCoord = sender.bottom
+                    tempWidth = sender.width
+                    sender.width = (tempWidth / 2)
+
+                    Dim rectangle As New RectangleShape
+                    newBeatName = temp.Substring(temp.Length - 1)
+                    temp = (temp.Substring(0, temp.Length - 1) & (CInt(newBeatName) + 1))
+                    rectangle.Name = temp
+                    rectangle.SetBounds(xCoord + (tempWidth / 2), yCoord - sender.height, tempWidth / 2, sender.height)
+                    rectangle.Parent = sender.parent
+                    rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orang, this will change depending on the selected instrument type
+                    rectangle.FillColor = Color.Transparent                             'Sets the background to be transparent
+                    rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+                End If
+            Else
+                tempTrack = tempTrack.Substring(8, 1)
+                'PROBLEM HERE YEA?
+                'After measure 9, this fails because 10 is 2 digits
+                If Integer.TryParse(tempMeasure.Substring(16, 1), CInt(tempMeasure.Substring(16, 1))) Then
+                    tempMeasure = tempMeasure.Substring(16, 1)
+                ElseIf Integer.TryParse(tempMeasure.Substring(16, 2), CInt(tempMeasure.Substring(16, 2))) Then
+                    tempMeasure = tempMeasure.Substring(16, 2)
+                ElseIf Integer.TryParse(tempMeasure.Substring(16, 3), CInt(tempMeasure.Substring(16, 3))) Then
+                    tempMeasure = tempMeasure.Substring(16, 3)
+                End If
+                For Each track In colTrack
+                    If track.TrackNumber = CInt(tempTrack) Then
+                        track.objMeasureManager.fillCollection(colMeasures)
+                        For Each measure In colMeasures
+                            If measure.measureNumber = tempMeasure.Trim Then
+                                If tempMeasure.Trim < 10 Then
+                                    If tempMeasure.Length = 1 Then
+                                        tempBeat = temp.Substring(21)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 2 Then
+                                        tempBeat = temp.Substring(22)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 3 Then
+                                        tempBeat = temp.Substring(23)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    End If
+                                    If measure.beat(tempBeat) = True Then
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.DarkOrange                                     'set appropriate color
+                                        sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    Else
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.Transparent                                    'set appropriate color
+                                        sender.BorderColor = Color.DarkOrange                                   'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    End If
+                                ElseIf (tempMeasure < 100) Then
+                                    If tempMeasure.Length = 1 Then
+                                        tempBeat = temp.Substring(22)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 2 Then
+                                        tempBeat = temp.Substring(23)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 3 Then
+                                        tempBeat = temp.Substring(24)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    End If
+                                    If measure.beat(tempBeat) = True Then
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.DarkOrange                                     'set appropriate color
+                                        sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    Else
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.Transparent                                    'set appropriate color
+                                        sender.BorderColor = Color.DarkOrange                                   'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    End If
+                                Else
+                                    If tempMeasure.Length = 1 Then
+                                        tempBeat = temp.Substring(23)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 2 Then
+                                        tempBeat = temp.Substring(24)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    ElseIf tempMeasure.Length = 3 Then
+                                        tempBeat = temp.Substring(25)
+                                        If measure.beat(tempBeat) = False Then
+                                            measure.beat(tempBeat) = True
+                                        Else
+                                            measure.beat(tempBeat) = False
+                                        End If
+                                    End If
+                                    If measure.beat(tempBeat) = True Then
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.DarkOrange                                     'set appropriate color
+                                        sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    Else
+                                        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                                        sender.FillColor = Color.Transparent                                    'set appropriate color
+                                        sender.BorderColor = Color.DarkOrange                                   'set border color to color of panel's background (make it transparent)
+                                        sender.BringToFront()                                                   'bring object back to front
+                                    End If
+                                End If
+                            End If
+                        Next
                     End If
                 Next
             End If
-        Next
-
+        ElseIf (e.Button = Windows.Forms.MouseButtons.Right) Then
+            sender.contextMenuStrip = cmBeats
+        End If
 
     End Sub
     'visually selects track on form
@@ -575,18 +701,32 @@ Public Class mainForm
     End Sub
 
     Private Sub pbPlay_Click(sender As Object, e As EventArgs) Handles pbPlay.Click
-        tmrPlayHead.Interval = 500
-        tmrPlayHead.Start()
+        Dim interval As Integer
+        Try
+            interval = Integer.Parse(txtTempo.Text.Trim)
+
+            For Each RectangleShape In colPlayHead
+                RectangleShape.FillColor = Color.FromArgb(101, 165, 210)
+                wait(60000 / interval / 4)
+            Next
+        Catch ex As Exception
+            MessageBox.Show("Please enter BPM as a whole number.")
+        End Try
     End Sub
 
-    Private Sub rectBeat_Fill(sender As Object, e As EventArgs) Handles tmrPlayHead.Tick
-        'not sure if this is even possible
+    Public Sub wait(ByVal interval As Integer)
+        Dim sw As New Stopwatch
+        sw.Start()
+        For Each RectangleShape In colPlayHead
+            Do While sw.ElapsedMilliseconds < interval
+                Application.DoEvents()
+            Loop
+        Next
+        sw.Stop()
     End Sub
 
-    Private Sub active(sender As Object, e As EventArgs)
-        sender.focus()
-        sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
-        sender.FillColor = Color.FromArgb(101, 165, 210)                                   'set appropriate color
-        sender.BorderColor = Color.DarkOrange                                   'set border color to color of panel's background (make it transparent)
+    Private Sub miSplit_Click(sender As Object, e As EventArgs) Handles miSplit.Click
+        btnAddMeasure.Text = cmBeats.SourceControl.Name
     End Sub
+
 End Class

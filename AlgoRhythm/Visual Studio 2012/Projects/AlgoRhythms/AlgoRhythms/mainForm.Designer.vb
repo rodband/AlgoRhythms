@@ -56,9 +56,12 @@ Partial Class mainForm
         Me.RectangleShape64 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.gbMixer = New System.Windows.Forms.GroupBox()
         Me.ilTrackList = New System.Windows.Forms.ImageList(Me.components)
-        Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.DeleteTrackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.cmBeats = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tmrPlayHead = New System.Windows.Forms.Timer(Me.components)
+        Me.txtTempo = New System.Windows.Forms.TextBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.miSplit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.miMerge = New System.Windows.Forms.ToolStripMenuItem()
         Me.MenuStrip1.SuspendLayout()
         Me.gbInstrumentSelector.SuspendLayout()
         Me.gbMain.SuspendLayout()
@@ -67,7 +70,7 @@ Partial Class mainForm
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStop, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel5.SuspendLayout()
-        Me.ContextMenuStrip1.SuspendLayout()
+        Me.cmBeats.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -191,6 +194,8 @@ Partial Class mainForm
         '
         'gbMain
         '
+        Me.gbMain.Controls.Add(Me.Label1)
+        Me.gbMain.Controls.Add(Me.txtTempo)
         Me.gbMain.Controls.Add(Me.lblDeleteTrack)
         Me.gbMain.Controls.Add(Me.pnlTrackList)
         Me.gbMain.Controls.Add(Me.pnlMeasures)
@@ -396,17 +401,43 @@ Partial Class mainForm
         Me.ilTrackList.TransparentColor = System.Drawing.Color.Transparent
         Me.ilTrackList.Images.SetKeyName(0, "trackBackground.bmp")
         '
-        'ContextMenuStrip1
+        'cmBeats
         '
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DeleteTrackToolStripMenuItem})
-        Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(140, 26)
+        Me.cmBeats.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.miSplit, Me.miMerge})
+        Me.cmBeats.Name = "ContextMenuStrip1"
+        Me.cmBeats.Size = New System.Drawing.Size(153, 70)
         '
-        'DeleteTrackToolStripMenuItem
+        'txtTempo
         '
-        Me.DeleteTrackToolStripMenuItem.Name = "DeleteTrackToolStripMenuItem"
-        Me.DeleteTrackToolStripMenuItem.Size = New System.Drawing.Size(139, 22)
-        Me.DeleteTrackToolStripMenuItem.Text = "Delete Track"
+        Me.txtTempo.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
+        Me.txtTempo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
+        Me.txtTempo.Location = New System.Drawing.Point(202, 379)
+        Me.txtTempo.Name = "txtTempo"
+        Me.txtTempo.Size = New System.Drawing.Size(45, 23)
+        Me.txtTempo.TabIndex = 15
+        Me.txtTempo.Text = "120"
+        Me.txtTempo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(199, 360)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(48, 16)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Tempo"
+        '
+        'miSplit
+        '
+        Me.miSplit.Name = "miSplit"
+        Me.miSplit.Size = New System.Drawing.Size(152, 22)
+        Me.miSplit.Text = "Split Beat"
+        '
+        'miMerge
+        '
+        Me.miMerge.Name = "miMerge"
+        Me.miMerge.Size = New System.Drawing.Size(152, 22)
+        Me.miMerge.Text = "Merge Beats"
         '
         'mainForm
         '
@@ -433,7 +464,7 @@ Partial Class mainForm
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStop, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel5.ResumeLayout(False)
-        Me.ContextMenuStrip1.ResumeLayout(False)
+        Me.cmBeats.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -461,8 +492,7 @@ Partial Class mainForm
     Friend WithEvents pbStepForward As System.Windows.Forms.PictureBox
     Friend WithEvents pbStepBack As System.Windows.Forms.PictureBox
     Friend WithEvents pbStop As System.Windows.Forms.PictureBox
-    Friend WithEvents ContextMenuStrip1 As System.Windows.Forms.ContextMenuStrip
-    Friend WithEvents DeleteTrackToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents cmBeats As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents tmrPlayHead As System.Windows.Forms.Timer
     Friend WithEvents pnlMeasures As System.Windows.Forms.Panel
     Friend WithEvents btnAddMeasure As System.Windows.Forms.Button
@@ -473,5 +503,9 @@ Partial Class mainForm
     Friend WithEvents RectangleShape63 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents RectangleShape64 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents lblDeleteTrack As System.Windows.Forms.Label
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtTempo As System.Windows.Forms.TextBox
+    Friend WithEvents miSplit As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents miMerge As System.Windows.Forms.ToolStripMenuItem
 
 End Class
