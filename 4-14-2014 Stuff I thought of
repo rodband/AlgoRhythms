@@ -1,0 +1,12 @@
+Things I Thought still need to be done:
+
+-Show message box when user tries to split a note into something shorter than 16th note
+-Show message box when user tries to combine note into something larger than 4th note
+
+
+
+Things I did
+-Commented
+-Code to visually uncolor playhead for stop button
+    -Found that play/pause button doesn't exactly work right. Once paused, clicking the stop button resumes the playhead.
+    -Also, once paused, it will randomly start playing again (maybe on cursor move while hovered over play button)
