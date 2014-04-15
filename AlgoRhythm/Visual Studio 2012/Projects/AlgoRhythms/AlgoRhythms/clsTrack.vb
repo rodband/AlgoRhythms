@@ -60,4 +60,13 @@
         End Set
     End Property
 
+    Public Property measureManager As clsMeasureManager
+        Get
+            Return objMeasureManager
+        End Get
+        Set(value As clsMeasureManager)
+            objMeasureManager = value
+        End Set
+    End Property
+
 End Class

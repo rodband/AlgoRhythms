@@ -37,6 +37,8 @@ Partial Class mainForm
         Me.lstSounds = New System.Windows.Forms.ListBox()
         Me.lstInstruments = New System.Windows.Forms.ListBox()
         Me.gbMain = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtTempo = New System.Windows.Forms.TextBox()
         Me.lblDeleteTrack = New System.Windows.Forms.Label()
         Me.pnlTrackList = New System.Windows.Forms.Panel()
         Me.pnlMeasures = New System.Windows.Forms.Panel()
@@ -57,11 +59,9 @@ Partial Class mainForm
         Me.gbMixer = New System.Windows.Forms.GroupBox()
         Me.ilTrackList = New System.Windows.Forms.ImageList(Me.components)
         Me.cmBeats = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.tmrPlayHead = New System.Windows.Forms.Timer(Me.components)
-        Me.txtTempo = New System.Windows.Forms.TextBox()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.miSplit = New System.Windows.Forms.ToolStripMenuItem()
         Me.miMerge = New System.Windows.Forms.ToolStripMenuItem()
+        Me.tmrPlayHead = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1.SuspendLayout()
         Me.gbInstrumentSelector.SuspendLayout()
         Me.gbMain.SuspendLayout()
@@ -212,6 +212,26 @@ Partial Class mainForm
         Me.gbMain.Size = New System.Drawing.Size(774, 409)
         Me.gbMain.TabIndex = 2
         Me.gbMain.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(199, 360)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(48, 16)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Tempo"
+        '
+        'txtTempo
+        '
+        Me.txtTempo.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
+        Me.txtTempo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
+        Me.txtTempo.Location = New System.Drawing.Point(202, 379)
+        Me.txtTempo.Name = "txtTempo"
+        Me.txtTempo.Size = New System.Drawing.Size(45, 23)
+        Me.txtTempo.TabIndex = 15
+        Me.txtTempo.Text = "120"
+        Me.txtTempo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'lblDeleteTrack
         '
@@ -405,38 +425,18 @@ Partial Class mainForm
         '
         Me.cmBeats.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.miSplit, Me.miMerge})
         Me.cmBeats.Name = "ContextMenuStrip1"
-        Me.cmBeats.Size = New System.Drawing.Size(153, 70)
-        '
-        'txtTempo
-        '
-        Me.txtTempo.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.txtTempo.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
-        Me.txtTempo.Location = New System.Drawing.Point(202, 379)
-        Me.txtTempo.Name = "txtTempo"
-        Me.txtTempo.Size = New System.Drawing.Size(45, 23)
-        Me.txtTempo.TabIndex = 15
-        Me.txtTempo.Text = "120"
-        Me.txtTempo.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(199, 360)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(48, 16)
-        Me.Label1.TabIndex = 16
-        Me.Label1.Text = "Tempo"
+        Me.cmBeats.Size = New System.Drawing.Size(140, 48)
         '
         'miSplit
         '
         Me.miSplit.Name = "miSplit"
-        Me.miSplit.Size = New System.Drawing.Size(152, 22)
+        Me.miSplit.Size = New System.Drawing.Size(139, 22)
         Me.miSplit.Text = "Split Beat"
         '
         'miMerge
         '
         Me.miMerge.Name = "miMerge"
-        Me.miMerge.Size = New System.Drawing.Size(152, 22)
+        Me.miMerge.Size = New System.Drawing.Size(139, 22)
         Me.miMerge.Text = "Merge Beats"
         '
         'mainForm
