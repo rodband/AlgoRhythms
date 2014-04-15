@@ -1,3 +1,0 @@
-﻿Module modGUIControl
-
-End Module
