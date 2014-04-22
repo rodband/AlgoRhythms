@@ -131,6 +131,9 @@
     <None Include="Use_Case_2-4-14.vsdx" />
     <None Include="Use_Case_4-15-14.vsdx" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Powerpoint Slides\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

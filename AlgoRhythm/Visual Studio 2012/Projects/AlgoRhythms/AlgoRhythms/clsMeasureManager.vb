@@ -5,6 +5,10 @@
         colMeasures.Add(measure)
     End Sub
 
+    Public Sub count(ByRef Mcount As Integer, ByRef colMeasure As Collection)
+        Mcount = colMeasure.Count
+    End Sub
+
     'finish this
     Public Sub fillCollection(ByRef colMeasure As Collection)
         colMeasure.Clear()

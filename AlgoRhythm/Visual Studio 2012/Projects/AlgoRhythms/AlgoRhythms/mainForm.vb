@@ -16,6 +16,8 @@ Public Class mainForm
     Dim scrollMeasureBox As New PictureBox              'Forces a scroll bar to appear on pnlMeasures
     Dim playPressed As Boolean                          'Determines whether or not the playhead is activated
     Dim playHead As Integer                             'hold the loop position of the playhead
+    Dim measurePanel1 As New ShapeContainer             'Creates a shape container to hold all the rectangle objects
+    Dim measurePanel2 As New ShapeContainer
 
     Private Sub mainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'On load, 1 track is added, including 10 measures and its mixer componant
@@ -82,8 +84,6 @@ Public Class mainForm
         scrollMeasureBox.SetBounds(801, 0, 80, 52)      'Sets the location and size of the picture box
 
         Dim changeX As Integer = 0                      'Stores the change in x value for each rectangle object
-        Dim measurePanel1 As New ShapeContainer          'Creates a shape container to hold all the rectangle objects
-        Dim measurePanel2 As New ShapeContainer
         pnlMeasures.Controls.Add(measurePanel1)          'Adds the shape container to pnlMeasures
         pnlMeasures.Controls.Add(measurePanel2)          'Adds the shape container to pnlMeasures
 
@@ -486,13 +486,35 @@ Public Class mainForm
                 tempTrack = tempTrack.Substring(8, 1)
                 'PROBLEM HERE YEA?
                 'After measure 9, this fails because 10 is 2 digits
-                If Integer.TryParse(tempMeasure.Substring(16, 1), CInt(tempMeasure.Substring(16, 1))) Then
-                    tempMeasure = tempMeasure.Substring(16, 1)
-                ElseIf Integer.TryParse(tempMeasure.Substring(16, 2), CInt(tempMeasure.Substring(16, 2))) Then
-                    tempMeasure = tempMeasure.Substring(16, 2)
-                ElseIf Integer.TryParse(tempMeasure.Substring(16, 3), CInt(tempMeasure.Substring(16, 3))) Then
-                    tempMeasure = tempMeasure.Substring(16, 3)
+                'objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString + "Beat" + i.ToString
+                Dim measureLengthOne As New Integer             'Temp variable for one digit measures
+                Dim measureLengthTwo As New Integer             'Temp variable for two digit measures
+                Dim measureLengthThree As New Integer           'Temp variable for three digit measures
+
+                Try
+                    measureLengthOne = CInt(tempMeasure.Substring(16, 1))
+                Catch ex As Exception
+                    measureLengthOne = 0
+                End Try
+                Try
+                    measureLengthTwo = CInt(tempMeasure.Substring(16, 2))
+                Catch ex As Exception
+                    measureLengthTwo = 0
+                End Try
+                Try
+                    measureLengthTwo = CInt(tempMeasure.Substring(16, 3))
+                Catch ex As Exception
+                    measureLengthThree = 0
+                End Try
+
+                If measureLengthThree <> 0 Then
+                    tempMeasure = measureLengthThree
+                ElseIf measureLengthTwo <> 0 Then
+                    tempMeasure = measureLengthTwo
+                Else
+                    tempMeasure = measureLengthOne
                 End If
+
                 For Each track In colTrack
                     If track.TrackNumber = CInt(tempTrack) Then
                         track.objMeasureManager.fillCollection(colMeasures)
@@ -541,7 +563,7 @@ Public Class mainForm
                                             measure.beat(tempBeat) = False
                                         End If
                                     ElseIf tempMeasure.Length = 2 Then
-                                        tempBeat = temp.Substring(23)
+                                        tempBeat = temp.Substring(22)
                                         If measure.beat(tempBeat) = False Then
                                             measure.beat(tempBeat) = True
                                         Else
@@ -611,6 +633,7 @@ Public Class mainForm
         End If
 
     End Sub
+
     'visually selects track on form
     Private Sub pbTrack_Click(sender As Object, e As EventArgs)
         Dim tempName As String
@@ -834,10 +857,6 @@ Public Class mainForm
         'This sub adds 1 measure to every track, this may be adjusted later to add a user specified number of measures
 
         Dim objName As String                       'Stores a string to set the name of objects created at runtime
-        Dim measurePanel1 As New ShapeContainer      'Creates a shape container that will hold the rectangles for each beat
-        Dim measurePanel2 As New ShapeContainer
-        pnlMeasures.Controls.Add(measurePanel1)      'Adds the measure panel to pnlMeasures
-        pnlMeasures.Controls.Add(measurePanel2)
         Dim changeX As Integer = (80 * numMeasures) 'Sets changeX to be the current number of measures * 80, so that any new rectangles are added in the correct location
 
         For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
@@ -863,12 +882,13 @@ Public Class mainForm
             For i As Integer = (numMeasures + 1) To (numMeasures + 1)                   'Loops once, and allows i to be used when naming each rectangle
                 objName = "pnlTrack" + k.ToString + "Measure" + numMeasures.ToString    'Sets objName to be the desired object name
                 measurePanel2.Name = objName.ToString                                    'Sets the object name to be objName
+                Dim objMeasure As New clsMeasure(k, i, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
+
+                For Each track In colTrack
+                    track.objMeasureManager.addMeasure(objMeasure)
+                Next
 
                 For j As Integer = 1 To 16 Step 4                                       'Loops from 1 to 16, by 4 to allow for proper naming of each rectangle
-                    Dim objMeasure As New clsMeasure(k, j, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
-                    For Each track In colTrack
-                        track.objMeasureManager.addMeasure(objMeasure)
-                    Next
                     objName = "pnlTrack" + k.ToString + "Measure" + i.ToString + "Beat" + j.ToString    'Sets objName to be the desired objectName
                     Dim rectangle As New RectangleShape                                 'Creates a new rectangle object to be named and used
                     rectangle.Name = objName.ToString                                   'Sets the object name to be objName
@@ -884,6 +904,11 @@ Public Class mainForm
                 changeX = changeX - 80              'Resets changeX back 80 so account for the next track
             Next
         Next
+
+        For Each track In colTrack
+            track.objMeasureManager.fillCollection(colMeasures)         'Fills the collection for each track on the front end
+        Next
+
         numMeasures = numMeasures + 1               'Increases nummeasures by 1, because you've added a measure
         scrollMeasureBox.SetBounds(((80 * numMeasures) - pnlMeasures.HorizontalScroll.Value) + 1, 0, 80, 52)        'Moves the scrollMeasureBox so the scrollbar in pnlMeasures works correnctly
     End Sub

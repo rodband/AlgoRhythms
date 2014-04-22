@@ -404,6 +404,7 @@ Partial Class mainForm
         '
         'gbMixer
         '
+        Me.gbMixer.Enabled = False
         Me.gbMixer.Font = New System.Drawing.Font("Tahoma", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.gbMixer.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
         Me.gbMixer.Location = New System.Drawing.Point(26, 444)
