@@ -434,6 +434,7 @@ Public Class mainForm
         tempBeat = temp
 
         If (e.Button = Windows.Forms.MouseButtons.Left) Then
+            'Split Beats
             If (My.Computer.Keyboard.ShiftKeyDown) Then
                 'Splitting Quarter Notes into 8th notes
                 If (sender.width > 10) Then
@@ -482,11 +483,10 @@ Public Class mainForm
                     rectangle.BringToFront()                                            'Brings the rectangle to the front
                     AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
                 End If
+                'Fill/Unfill Beats
             Else
                 tempTrack = tempTrack.Substring(8, 1)
-                'PROBLEM HERE YEA?
-                'After measure 9, this fails because 10 is 2 digits
-                'objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString + "Beat" + i.ToString
+
                 Dim measureLengthOne As New Integer             'Temp variable for one digit measures
                 Dim measureLengthTwo As New Integer             'Temp variable for two digit measures
                 Dim measureLengthThree As New Integer           'Temp variable for three digit measures
@@ -524,9 +524,9 @@ Public Class mainForm
                                     If tempMeasure.Length = 1 Then
                                         tempBeat = temp.Substring(21)
                                         If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                            measure.beat(tempBeat) = True                                       'set beat to active
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat) = False                                      'set beat to inactive
                                         End If
                                     ElseIf tempMeasure.Length = 2 Then
                                         tempBeat = temp.Substring(22)
@@ -658,7 +658,7 @@ Public Class mainForm
             End If
         Next
     End Sub
-
+    'play demo of sound when clicked in list
     Private Sub lstSounds_MouseClick(sender As Object, e As MouseEventArgs) Handles lstSounds.MouseClick
         My.Computer.Audio.Play("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Sounds\" + lstSounds.SelectedItem + ".wav", AudioPlayMode.Background)
     End Sub
@@ -799,6 +799,8 @@ Public Class mainForm
     Private Sub pbPlay_Click(sender As Object, e As EventArgs) Handles pbPlay.Click
         Dim playImage As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\PlayButton.bmp")
         Dim pauseImage As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\PauseButton.bmp")
+        Dim measureNumber As Integer            'Finds the measure number that the playhead is currently at
+        Dim beatNumber As Integer               'Finds the beat of the measure the playhead is currently at
 
         Dim interval As Integer
         If playPressed = True Then
@@ -811,22 +813,57 @@ Public Class mainForm
             pbStop.Visible = False
             playPressed = True
             sender.image = pauseImage
-            Try
-                interval = Integer.Parse(txtTempo.Text.Trim)
+            'Try
+            interval = Integer.Parse(txtTempo.Text.Trim)
 
-                For j As Integer = playHead To colPlayHead.Count
-                    colPlayHead.Item(j).FillColor = Color.FromArgb(101, 165, 210)
-                    wait(60000 / interval / 4)
-                    If playPressed = False Then
-                        pbStop.Enabled = True
-                        pbStop.Visible = True
-                        playHead = j
-                        Exit For
+            For j As Integer = playHead To colPlayHead.Count
+                colPlayHead.Item(j).FillColor = Color.FromArgb(101, 165, 210)                                                           'Fill the playhead rectangle
+                pnlMeasures.AutoScrollPosition = New Point(((colPlayHead.Item(j).Left - 250)), colPlayHead.Item(j).Top)                 'Scroll the panel with the playhead
+                'start sound
+                For Each track In colTrack
+                    measureNumber = (j \ 17)
+                    beatNumber = (j Mod 16)
+                    If beatNumber = 0 Then
+                        beatNumber = 16
+                    End If
+                    If (track.objMeasureManager.colMeasures.Item(measureNumber + 1).beat(beatNumber) = True) Then
+                        If track.soundName = "null" Then
+                            MessageBox.Show("Please select a sound for track " & track.trackNumber & ".")
+                            For Each RectangleShape In colPlayHead
+                                RectangleShape.FillColor = Color.Transparent
+                            Next
+                            pbStop.Enabled = True
+                            playPressed = False
+                            pbStop.Visible = True
+                            sender.image = playImage
+                            pbPlay.Visible = True
+                            playHead = 1
+                            Exit Sub
+                        Else
+                            My.Computer.Audio.Play("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Sounds\" + track.soundName + ".wav", AudioPlayMode.Background)
+                        End If
                     End If
                 Next
-            Catch ex As Exception
-                MessageBox.Show("Please enter BPM as a whole number.")
-            End Try
+                'end sound
+                wait(60000 / interval / 4)                                                                                              'Call Wait Function
+                If playPressed = False Then                                                                                             'Change Play/Pause button Image
+                    pbStop.Enabled = True
+                    pbStop.Visible = True
+                    playHead = j                                                                                                        'Set the playhead's location
+                    Exit For
+                End If
+                'if playhead has reached end of file
+                If j = colPlayHead.Count Then
+                    pbStop.Enabled = True
+                    playPressed = False
+                    pbStop.Visible = True
+                    sender.image = playImage
+                    pbPlay.Visible = False
+                End If
+            Next
+            'Catch ex As Exception
+            ' MessageBox.Show("Please enter BPM as a whole number.")
+            'End Try
         End If
 
     End Sub
@@ -847,10 +884,6 @@ Public Class mainForm
                 playHead = 1
             Next
         End If
-    End Sub
-
-    Private Sub mainForm_MouseClick(sender As Object, e As MouseEventArgs) Handles Me.MouseClick
-        lblAddMeasure.Text = colTrack.Count.ToString
     End Sub
 
     Private Sub lblAddMeasure_Click_1(sender As Object, e As EventArgs) Handles lblAddMeasure.Click
@@ -881,7 +914,7 @@ Public Class mainForm
         For k As Integer = 1 To numTracks                                               'Loops for each track that needs one measure added to it
             For i As Integer = (numMeasures + 1) To (numMeasures + 1)                   'Loops once, and allows i to be used when naming each rectangle
                 objName = "pnlTrack" + k.ToString + "Measure" + numMeasures.ToString    'Sets objName to be the desired object name
-                measurePanel2.Name = objName.ToString                                    'Sets the object name to be objName
+                measurePanel2.Name = objName.ToString                                   'Sets the object name to be objName
                 Dim objMeasure As New clsMeasure(k, i, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
 
                 For Each track In colTrack
@@ -892,13 +925,15 @@ Public Class mainForm
                     objName = "pnlTrack" + k.ToString + "Measure" + i.ToString + "Beat" + j.ToString    'Sets objName to be the desired objectName
                     Dim rectangle As New RectangleShape                                 'Creates a new rectangle object to be named and used
                     rectangle.Name = objName.ToString                                   'Sets the object name to be objName
-                    rectangle.Parent = measurePanel2                                     'Sets the parent of the rectangle to be the shape container
+                    rectangle.Parent = measurePanel2                                    'Sets the parent of the rectangle to be the shape container
                     rectangle.SetBounds(1 * changeX, 48 + (52 * (k - 1)), 20, 25)       'Sets the location and size of the rectangle
                     changeX = changeX + 20                                              'Increases changeX by 20 to account for the space of the previously added rectangle
                     rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orang, this will change depending on the selected instrument type
                     rectangle.FillColor = Color.Transparent                             'Sets the background to be transparent
                     rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    pnlMeasures.AutoScrollPosition = New Point((rectangle.Left + 10), rectangle.Top)           'Moves scroll bar to end of measures (to view measures that have been added)
                     AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+
 
                 Next
                 changeX = changeX - 80              'Resets changeX back 80 so account for the next track
@@ -911,6 +946,7 @@ Public Class mainForm
 
         numMeasures = numMeasures + 1               'Increases nummeasures by 1, because you've added a measure
         scrollMeasureBox.SetBounds(((80 * numMeasures) - pnlMeasures.HorizontalScroll.Value) + 1, 0, 80, 52)        'Moves the scrollMeasureBox so the scrollbar in pnlMeasures works correnctly
+
     End Sub
 
     Private Sub pbStepBack_Click(sender As Object, e As EventArgs) Handles pbStepBack.Click

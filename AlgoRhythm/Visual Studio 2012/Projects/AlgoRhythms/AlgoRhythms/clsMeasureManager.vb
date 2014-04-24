@@ -1,5 +1,5 @@
 ﻿Public Class clsMeasureManager
-    Dim colMeasures As New Collection
+    Public colMeasures As New Collection
 
     Public Sub addMeasure(ByRef measure As clsMeasure)
         colMeasures.Add(measure)
