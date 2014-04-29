@@ -59,9 +59,12 @@ Partial Class mainForm
         Me.gbMixer = New System.Windows.Forms.GroupBox()
         Me.ilTrackList = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrPlayHead = New System.Windows.Forms.Timer(Me.components)
+        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.lnPlayHead = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.MenuStrip1.SuspendLayout()
         Me.gbInstrumentSelector.SuspendLayout()
         Me.gbMain.SuspendLayout()
+        Me.pnlMeasures.SuspendLayout()
         CType(Me.pbPlay, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -263,6 +266,7 @@ Partial Class mainForm
         '
         Me.pnlMeasures.AutoScroll = True
         Me.pnlMeasures.BackColor = System.Drawing.Color.Transparent
+        Me.pnlMeasures.Controls.Add(Me.ShapeContainer2)
         Me.pnlMeasures.Location = New System.Drawing.Point(202, 9)
         Me.pnlMeasures.Name = "pnlMeasures"
         Me.pnlMeasures.Size = New System.Drawing.Size(563, 337)
@@ -420,6 +424,26 @@ Partial Class mainForm
         Me.ilTrackList.TransparentColor = System.Drawing.Color.Transparent
         Me.ilTrackList.Images.SetKeyName(0, "trackBackground.bmp")
         '
+        'ShapeContainer2
+        '
+        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer2.Name = "ShapeContainer2"
+        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.lnPlayHead})
+        Me.ShapeContainer2.Size = New System.Drawing.Size(563, 337)
+        Me.ShapeContainer2.TabIndex = 0
+        Me.ShapeContainer2.TabStop = False
+        '
+        'lnPlayHead
+        '
+        Me.lnPlayHead.BorderColor = System.Drawing.Color.Chartreuse
+        Me.lnPlayHead.Name = "lnPlayHead"
+        Me.lnPlayHead.Visible = False
+        Me.lnPlayHead.X1 = 10
+        Me.lnPlayHead.X2 = 10
+        Me.lnPlayHead.Y1 = 12
+        Me.lnPlayHead.Y2 = 325
+        '
         'mainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -432,6 +456,8 @@ Partial Class mainForm
         Me.Controls.Add(Me.gbInstrumentSelector)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
+        Me.MaximumSize = New System.Drawing.Size(1077, 697)
+        Me.MinimumSize = New System.Drawing.Size(1077, 697)
         Me.Name = "mainForm"
         Me.Text = "AlgoRhythms"
         Me.MenuStrip1.ResumeLayout(False)
@@ -439,6 +465,7 @@ Partial Class mainForm
         Me.gbInstrumentSelector.ResumeLayout(False)
         Me.gbMain.ResumeLayout(False)
         Me.gbMain.PerformLayout()
+        Me.pnlMeasures.ResumeLayout(False)
         CType(Me.pbPlay, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).EndInit()
@@ -483,5 +510,7 @@ Partial Class mainForm
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtTempo As System.Windows.Forms.TextBox
     Friend WithEvents lblAddMeasure As System.Windows.Forms.Label
+    Friend WithEvents ShapeContainer2 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
+    Friend WithEvents lnPlayHead As Microsoft.VisualBasic.PowerPacks.LineShape
 
 End Class

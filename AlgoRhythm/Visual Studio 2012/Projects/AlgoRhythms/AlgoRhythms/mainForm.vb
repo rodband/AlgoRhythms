@@ -18,149 +18,334 @@ Public Class mainForm
     Dim playHead As Integer                             'hold the loop position of the playhead
     Dim measurePanel1 As New ShapeContainer             'Creates a shape container to hold all the rectangle objects
     Dim measurePanel2 As New ShapeContainer
+    Dim objFileManager As New clsFileManager
 
     Private Sub mainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'On load, 1 track is added, including 10 measures and its mixer componant
-        Dim trackBackground As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\trackBackground.bmp")
-        Dim muteUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteTrackButtonUp.png")
-        Dim soloUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloTrackButtonUp.png")
-        Dim muteMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteButtonUp.png")
-        Dim soloMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloButtonUp.png")
+        Me.Show()
 
-        numTracks = 1                                   'Sets the number of tracks to 1, the one created on load
-        numMeasures = 1                                 'Sets the number of tracks to 1 so 10 measures can be added in a loop later
-        playPressed = False                             'Initialize playPressed to be off
-        playHead = 1                                    'Starts at 1, at the beginning of the playbar
+        Dim loadFile As DialogResult = MessageBox.Show("Would you like to load an existing AlgoRhythm?", "Welcome!", MessageBoxButtons.YesNo)
+        If loadFile = Windows.Forms.DialogResult.No Then
+            'On load, 1 track is added, including 10 measures and its mixer componant
+            Dim trackBackground As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\trackBackground.bmp")
+            Dim muteUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteTrackButtonUp.png")
+            Dim soloUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloTrackButtonUp.png")
+            Dim muteMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteButtonUp.png")
+            Dim soloMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloButtonUp.png")
 
-        Dim objName As String                           'Stores a string to set the name of objects created at runtime
+            numTracks = 1                                   'Sets the number of tracks to 1, the one created on load
+            numMeasures = 1                                 'Sets the number of tracks to 1 so 10 measures can be added in a loop later
+            playPressed = False                             'Initialize playPressed to be off
+            playHead = 1                                    'Starts at 1, at the beginning of the playbar
 
-        Dim pictureBox As New PictureBox                'Creates a picture box object to be named and used
-        objName = "pbTrack" + numTracks.ToString        'Sets objName to the desired object name
-        pictureBox.Name = objName.ToString              'Sets the object name to be objName
-        pnlTrackList.Controls.Add(pictureBox)           'Adds the picture box object to the pnlTrackList control
-        pictureBox.SetBounds(0, 0, 166, 53)             'Sets the location and size of the picture box
-        pictureBox.Image = trackBackground              'Sets the image of the picture box to track background
-        pictureBox.BringToFront()                       'Brings the picture box to the front
-        colPBTrack.Add(pictureBox)                      'add picture box to colPBTrack collection
-        AddHandler pictureBox.Click, AddressOf pbTrack_Click
+            Dim objName As String                           'Stores a string to set the name of objects created at runtime
 
-        Dim trackLabel As New Label                     'Creates a label object to be named and used
-        objName = "lblTrack" + numTracks.ToString       'Sets objName to the desired object name
-        trackLabel.Name = objName.ToString              'Sets the object name to be objName
-        pnlTrackList.Controls.Add(trackLabel)           'Adds the label object to the pnlTrackList control
-        trackLabel.SetBounds(10, 18, 127, 16)           'Sets the location and size of the picture box
-        trackLabel.Text = "Select an Instrument"        'Sets the default text of the label
-        trackLabel.BackColor = Color.FromArgb(40, 40, 40)   'Sets the background color of the label to match the trackBackground image
-        trackLabel.BringToFront()                       'Brings the label to the front
-        colLBLTrack.Add(trackLabel)                     'add track label to colLBLTrack collection
+            Dim pictureBox As New PictureBox                'Creates a picture box object to be named and used
+            objName = "pbTrack" + numTracks.ToString        'Sets objName to the desired object name
+            pictureBox.Name = objName.ToString              'Sets the object name to be objName
+            pnlTrackList.Controls.Add(pictureBox)           'Adds the picture box object to the pnlTrackList control
+            pictureBox.SetBounds(0, 0, 166, 53)             'Sets the location and size of the picture box
+            pictureBox.Image = trackBackground              'Sets the image of the picture box to track background
+            pictureBox.BringToFront()                       'Brings the picture box to the front
+            colPBTrack.Add(pictureBox)                      'add picture box to colPBTrack collection
+            AddHandler pictureBox.Click, AddressOf pbTrack_Click
 
-        Dim pbMute As New PictureBox                    'Creates a picture box to be named and used
-        objName = "pbMuteTrack" + numTracks.ToString    'Sets objName to the desired object name
-        pbMute.Name = objName.ToString                  'Sets the object name to be objName
-        pnlTrackList.Controls.Add(pbMute)               'Adds the picture box object to the pnlTrackList control
-        pbMute.SetBounds(138, 1, 25, 23)                'Sets the location and size of the picture box
-        pbMute.Image = muteUp                           'Sets the image of the picture box to the mute buttons up state
-        pbMute.BringToFront()                           'Brings the picture box to the front
-        colPBMute.Add(pbMute)                           'Add mute button to the collection
-        AddHandler pbMute.Click, AddressOf pbMute_Click 'Links the picture box to the pbMute_Click handler
+            Dim trackLabel As New Label                     'Creates a label object to be named and used
+            objName = "lblTrack" + numTracks.ToString       'Sets objName to the desired object name
+            trackLabel.Name = objName.ToString              'Sets the object name to be objName
+            pnlTrackList.Controls.Add(trackLabel)           'Adds the label object to the pnlTrackList control
+            trackLabel.SetBounds(10, 18, 127, 16)           'Sets the location and size of the picture box
+            trackLabel.Text = "Select an Instrument"        'Sets the default text of the label
+            trackLabel.BackColor = Color.FromArgb(40, 40, 40)   'Sets the background color of the label to match the trackBackground image
+            trackLabel.BringToFront()                       'Brings the label to the front
+            colLBLTrack.Add(trackLabel)                     'add track label to colLBLTrack collection
 
-        Dim pbSolo As New PictureBox                    'Creates a picture box to be named and used
-        objName = "pbSoloTrack" + numTracks.ToString    'Sets objName to the desired object name
-        pbSolo.Name = objName.ToString                  'Sets the object name to be objName
-        pnlTrackList.Controls.Add(pbSolo)               'Adds the picture box object to the pnlTrackList control
-        pbSolo.SetBounds(138, 28, 25, 23)               'Sets the location and size of the picture box
-        pbSolo.Image = soloUp                           'Sets the image of the picture box to the solo buttons up state
-        pbSolo.BringToFront()                           'Brings the picture box to the front
-        colPBSolo.Add(pbSolo)                           'add solo button to colPBSolo collection
-        AddHandler pbSolo.Click, AddressOf pbSolo_Click 'Links the picture box to the pbSolo_Click handler
+            Dim pbMute As New PictureBox                    'Creates a picture box to be named and used
+            objName = "pbMuteTrack" + numTracks.ToString    'Sets objName to the desired object name
+            pbMute.Name = objName.ToString                  'Sets the object name to be objName
+            pnlTrackList.Controls.Add(pbMute)               'Adds the picture box object to the pnlTrackList control
+            pbMute.SetBounds(138, 1, 25, 23)                'Sets the location and size of the picture box
+            pbMute.Image = muteUp                           'Sets the image of the picture box to the mute buttons up state
+            pbMute.BringToFront()                           'Brings the picture box to the front
+            colPBMute.Add(pbMute)                           'Add mute button to the collection
+            AddHandler pbMute.Click, AddressOf pbMute_Click 'Links the picture box to the pbMute_Click handler
 
-        Dim objMeasureManager As New clsMeasureManager
-        Dim track As New clsTrack(numTracks, "null", False, False, False, objMeasureManager)
-        trackManager.addTrack(track)
-        trackManager.fillCollection(colTrack)
+            Dim pbSolo As New PictureBox                    'Creates a picture box to be named and used
+            objName = "pbSoloTrack" + numTracks.ToString    'Sets objName to the desired object name
+            pbSolo.Name = objName.ToString                  'Sets the object name to be objName
+            pnlTrackList.Controls.Add(pbSolo)               'Adds the picture box object to the pnlTrackList control
+            pbSolo.SetBounds(138, 28, 25, 23)               'Sets the location and size of the picture box
+            pbSolo.Image = soloUp                           'Sets the image of the picture box to the solo buttons up state
+            pbSolo.BringToFront()                           'Brings the picture box to the front
+            colPBSolo.Add(pbSolo)                           'add solo button to colPBSolo collection
+            AddHandler pbSolo.Click, AddressOf pbSolo_Click 'Links the picture box to the pbSolo_Click handler
 
-        scrollMeasureBox.Name = "ScrollMeasureBox"      'Sets the name of the picture box that enables the scroll bar in pnlMeasures
-        pnlMeasures.Controls.Add(scrollMeasureBox)      'Adds the picture box to pnlMeasures
-        scrollMeasureBox.SetBounds(801, 0, 80, 52)      'Sets the location and size of the picture box
+            Dim objMeasureManager As New clsMeasureManager
+            Dim track As New clsTrack(numTracks, "null", False, False, False, objMeasureManager)
+            trackManager.addTrack(track)
+            trackManager.fillCollection(colTrack)
 
-        Dim changeX As Integer = 0                      'Stores the change in x value for each rectangle object
-        pnlMeasures.Controls.Add(measurePanel1)          'Adds the shape container to pnlMeasures
-        pnlMeasures.Controls.Add(measurePanel2)          'Adds the shape container to pnlMeasures
+            scrollMeasureBox.Name = "ScrollMeasureBox"      'Sets the name of the picture box that enables the scroll bar in pnlMeasures
+            pnlMeasures.Controls.Add(scrollMeasureBox)      'Adds the picture box to pnlMeasures
+            scrollMeasureBox.SetBounds(801, 0, 80, 52)      'Sets the location and size of the picture box
 
-        'CREATE PLAYHEAD
-        For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
-            objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
-            measurePanel1.Name = objName.ToString                                    'Sets the object name to be objName
-            For m As Integer = 1 To 16 Step 1                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
-                objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString + "Beat" + m.ToString    'Names each rectangle properly
-                Dim rectangle As New RectangleShape                                 'Creates a rectangle object, representing one QUARTER note
-                rectangle.Name = objName.ToString                                   'Sets the object name to be objName
-                rectangle.Parent = measurePanel1                                     'Sets the rectangles parent to be the shape container created earlier
-                rectangle.SetBounds(1 * changeX, 10, 5, 18)                        'Sets the size and lcoation of the rectangle
-                changeX = changeX + 5                                              'Increases changeX by 20 so the next rectangle is placed correctly
-                rectangle.FillStyle = FillStyle.Solid
-                rectangle.BorderColor = Color.FromArgb(101, 165, 210)                            'Sets the boarder color to be orange, this will change depending on the selected instrument
-                rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
-                rectangle.BringToFront()                                            'Brings the rectangle to the front
-                colPlayHead.Add(rectangle)
+            Dim changeX As Integer = 0                      'Stores the change in x value for each rectangle object
+            pnlMeasures.Controls.Add(measurePanel1)          'Adds the shape container to pnlMeasures
+            pnlMeasures.Controls.Add(measurePanel2)          'Adds the shape container to pnlMeasures
+
+            'CREATE PLAYHEAD
+            For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
+                objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString      'Sets objName to the desired object name
+                measurePanel1.Name = objName.ToString                                    'Sets the object name to be objName
+                For m As Integer = 1 To 16 Step 1                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
+                    objName = "pnlPlayHead" + numTracks.ToString + "Measure" + k.ToString + "Beat" + m.ToString    'Names each rectangle properly
+                    Dim rectangle As New RectangleShape                                 'Creates a rectangle object, representing one QUARTER note
+                    rectangle.Name = objName.ToString                                   'Sets the object name to be objName
+                    rectangle.Parent = measurePanel1                                     'Sets the rectangles parent to be the shape container created earlier
+                    rectangle.SetBounds(1 * changeX, 10, 5, 18)                        'Sets the size and lcoation of the rectangle
+                    changeX = changeX + 5                                              'Increases changeX by 20 so the next rectangle is placed correctly
+                    rectangle.FillStyle = FillStyle.Solid
+                    rectangle.BorderColor = Color.FromArgb(101, 165, 210)                            'Sets the boarder color to be orange, this will change depending on the selected instrument
+                    rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
+                    rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    colPlayHead.Add(rectangle)
+                Next
             Next
-        Next
 
-        changeX = 0
-        For j As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
-            Dim objMeasure As New clsMeasure(track.trackNumber, j, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
-            track.objMeasureManager.addMeasure(objMeasure)
-            objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString      'Sets objName to the desired object name
-            measurePanel2.Name = objName.ToString                                    'Sets the object name to be objName
-            For i As Integer = 1 To 16 Step 4                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
-                objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString + "Beat" + i.ToString    'Names each rectangle properly
-                Dim rectangle As New RectangleShape                                 'Creates a rectangle object, representing one QUARTER note
-                rectangle.Name = objName.ToString                                   'Sets the object name to be objName
-                rectangle.Parent = measurePanel2                                    'Sets the rectangles parent to be the shape container created earlier
-                rectangle.SetBounds(1 * changeX, 48, 20, 25)                        'Sets the size and lcoation of the rectangle
-                changeX = changeX + 20                                              'Increases changeX by 20 so the next rectangle is placed correctly
-                rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orange, this will change depending on the selected instrument
-                rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
-                rectangle.BringToFront()                                            'Brings the rectangle to the front
-                AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+            changeX = 0
+            For j As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
+                Dim objMeasure As New clsMeasure(track.trackNumber, j, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False)
+                track.objMeasureManager.addMeasure(objMeasure)                          'add measure object to measure manager
+                objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString      'Sets objName to the desired object name
+                measurePanel2.Name = objName.ToString                                    'Sets the object name to be objName
+                For i As Integer = 1 To 16 Step 4                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
+                    objName = "pnlTrack" + numTracks.ToString + "Measure" + j.ToString + "Beat" + i.ToString    'Names each rectangle properly
+                    Dim rectangle As New RectangleShape                                 'Creates a rectangle object, representing one QUARTER note
+                    rectangle.Name = objName.ToString                                   'Sets the object name to be objName
+                    rectangle.Parent = measurePanel2                                    'Sets the rectangles parent to be the shape container created earlier
+                    rectangle.SetBounds(1 * changeX, 48, 20, 25)                        'Sets the size and lcoation of the rectangle
+                    changeX = changeX + 20                                              'Increases changeX by 20 so the next rectangle is placed correctly
+                    rectangle.BorderColor = Color.DarkOrange                            'Sets the boarder color to be orange, this will change depending on the selected instrument
+                    rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
+                    rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+                Next
             Next
-        Next
-        numMeasures = 10                                'Sets numMeasures to reflect the current number of measures
+            numMeasures = 10                                'Sets numMeasures to reflect the current number of measures
 
-        Dim mixerGroupBox As New GroupBox               'Creates a groupBox to be named and used
-        objName = "gbTrackMixer" + numTracks.ToString   'Sets objName to the desired object name
-        mixerGroupBox.Name = objName.ToString           'Sets the object name to be objName
-        gbMixer.Controls.Add(mixerGroupBox)             'Adds the group box to gbMixer
-        mixerGroupBox.SetBounds(8, 22, 70, 162)         'Sets the size and location of the group box
-        mixerGroupBox.BringToFront()                    'Brings the group box to the front
+            track.objMeasureManager.fillCollection(colMeasures)
 
-        Dim mixerTrackBar As New TrackBar               'Creates a track bar to be named and used
-        objName = "tbTrackBar" + numTracks.ToString     'Sets objName to the desired object name
-        mixerTrackBar.Name = objName.ToString           'Sets the object name to be objName
-        mixerGroupBox.Controls.Add(mixerTrackBar)       'Adds the track bar to the mixerGroupBox created dynamically
-        mixerTrackBar.Orientation = Orientation.Vertical 'Sets the orientation of the track bar to be vertical, so it represents volume for a track
-        mixerTrackBar.SetBounds(19, 22, 45, 104)        'Sets the location and size of the track bar
-        mixerTrackBar.Value = 5                         'Sets the value of the track bar to be 5, this represents 0db change to the default volume of the track
-        mixerTrackBar.BringToFront()                    'Brings the track bar to the front
+            Dim mixerGroupBox As New GroupBox               'Creates a groupBox to be named and used
+            objName = "gbTrackMixer" + numTracks.ToString   'Sets objName to the desired object name
+            mixerGroupBox.Name = objName.ToString           'Sets the object name to be objName
+            gbMixer.Controls.Add(mixerGroupBox)             'Adds the group box to gbMixer
+            mixerGroupBox.SetBounds(8, 22, 70, 162)         'Sets the size and location of the group box
+            mixerGroupBox.BringToFront()                    'Brings the group box to the front
 
-        Dim pbMixerMute As New PictureBox                   'Creates a picture box to be named and used
-        objName = "pbMixerMute" + numTracks.ToString   'Sets objName to the desired object name
-        pbMixerMute.Name = objName.ToString                 'Sets the object nme to be objName
-        mixerGroupBox.Controls.Add(pbMixerMute)             'Adds the picture box to the mixerGroupBox created dynamically
-        pbMixerMute.SetBounds(9, 132, 25, 23)               'Sets the size and location of the picture box
-        pbMixerMute.Image = muteMixerUp                     'Sets the image to be the mute button's up state
-        pbMixerMute.BringToFront()                          'Brings the picture box to the front
-        AddHandler pbMixerMute.Click, AddressOf pbMute_Click 'Adds a handler that controls what happens on click
+            Dim mixerTrackBar As New TrackBar               'Creates a track bar to be named and used
+            objName = "tbTrackBar" + numTracks.ToString     'Sets objName to the desired object name
+            mixerTrackBar.Name = objName.ToString           'Sets the object name to be objName
+            mixerGroupBox.Controls.Add(mixerTrackBar)       'Adds the track bar to the mixerGroupBox created dynamically
+            mixerTrackBar.Orientation = Orientation.Vertical 'Sets the orientation of the track bar to be vertical, so it represents volume for a track
+            mixerTrackBar.SetBounds(19, 22, 45, 104)        'Sets the location and size of the track bar
+            mixerTrackBar.Value = 5                         'Sets the value of the track bar to be 5, this represents 0db change to the default volume of the track
+            mixerTrackBar.BringToFront()                    'Brings the track bar to the front
 
-        Dim pbMixerSolo As New PictureBox                   'Creates a picture box to be named and used
-        objName = "pbMixerSolo" + numTracks.ToString   'Sets objName to the desired object name
-        pbMixerSolo.Name = objName.ToString                 'Sets the object nme to be objName
-        mixerGroupBox.Controls.Add(pbMixerSolo)             'Adds the picture box to the mixerGroupBox created dynamically
-        pbMixerSolo.SetBounds(35, 132, 25, 23)              'Sets the size and location of the picture box
-        pbMixerSolo.Image = soloMixerUp                     'Sets the image to be the solo button's up state
-        pbMixerSolo.BringToFront()                          'Brings the picture box to the front
-        AddHandler pbMixerSolo.Click, AddressOf pbSolo_Click 'Adds a handler that controls what happens on click
+            Dim pbMixerMute As New PictureBox                   'Creates a picture box to be named and used
+            objName = "pbMixerMute" + numTracks.ToString   'Sets objName to the desired object name
+            pbMixerMute.Name = objName.ToString                 'Sets the object nme to be objName
+            mixerGroupBox.Controls.Add(pbMixerMute)             'Adds the picture box to the mixerGroupBox created dynamically
+            pbMixerMute.SetBounds(9, 132, 25, 23)               'Sets the size and location of the picture box
+            pbMixerMute.Image = muteMixerUp                     'Sets the image to be the mute button's up state
+            pbMixerMute.BringToFront()                          'Brings the picture box to the front
+            AddHandler pbMixerMute.Click, AddressOf pbMute_Click 'Adds a handler that controls what happens on click
 
+            Dim pbMixerSolo As New PictureBox                   'Creates a picture box to be named and used
+            objName = "pbMixerSolo" + numTracks.ToString   'Sets objName to the desired object name
+            pbMixerSolo.Name = objName.ToString                 'Sets the object nme to be objName
+            mixerGroupBox.Controls.Add(pbMixerSolo)             'Adds the picture box to the mixerGroupBox created dynamically
+            pbMixerSolo.SetBounds(35, 132, 25, 23)              'Sets the size and location of the picture box
+            pbMixerSolo.Image = soloMixerUp                     'Sets the image to be the solo button's up state
+            pbMixerSolo.BringToFront()                          'Brings the picture box to the front
+            AddHandler pbMixerSolo.Click, AddressOf pbSolo_Click 'Adds a handler that controls what happens on click
+
+            'Opens a fileDialog so the user can select a file to load.
+        Else
+            Dim fileDialog As New OpenFileDialog()
+            Dim fileName As String
+            fileDialog.InitialDirectory = "H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\bin\Debug"
+            fileDialog.Filter = "txt files (*.txt)|*.txt"
+            fileDialog.ShowDialog()
+
+            fileName = fileDialog.FileName
+            fileName = fileName.Substring(82)
+            objFileManager.loadAlgoRhythm(numTracks, numMeasures, colTrack, fileName)
+
+            'Adds numTracks number of tracks
+            Dim trackBackground As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\trackBackground.bmp")
+            Dim muteMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteButtonUp.png")
+            Dim soloMixerUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloButtonUp.png")
+            Dim muteUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteTrackButtonUp.png")
+            Dim soloUp As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloTrackButtonUp.png")
+            Dim muteDown As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\muteButtonDown.png")
+            Dim soloDown As New Bitmap("H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\My Project\Images\soloButtonDown.png")
+            Dim XVAL = 53
+            Dim changeX As Integer = 0
+
+            Dim objName As String
+
+            playPressed = False                             'Initialize playPressed to be off
+            playHead = 1
+            pnlMeasures.Controls.Add(measurePanel1)          'Adds the shape container to pnlMeasures
+            pnlMeasures.Controls.Add(measurePanel2)          'Adds the shape container to pnlMeasures
+
+            'CREATE PLAYHEAD
+            For k As Integer = 1 To 10                                                  'Counts from 1 to 10, adding a full measure to the UI each time
+                objName = "pnlPlayHead1Measure" + k.ToString                            'Sets objName to the desired object name
+                measurePanel1.Name = objName.ToString                                   'Sets the object name to be objName
+                For m As Integer = 1 To 16 Step 1                                       'Counts from 1 to 16, by 4 to build and name each rectangle correctly
+                    objName = "pnlPlayHead1Measure" + k.ToString + "Beat" + m.ToString  'Names each rectangle properly
+                    Dim rectangle As New RectangleShape                                 'Creates a rectangle object, representing one QUARTER note
+                    rectangle.Name = objName.ToString                                   'Sets the object name to be objName
+                    rectangle.Parent = measurePanel1                                    'Sets the rectangles parent to be the shape container created earlier
+                    rectangle.SetBounds(1 * changeX, 10, 5, 18)                         'Sets the size and lcoation of the rectangle
+                    changeX = changeX + 5                                               'Increases changeX by 20 so the next rectangle is placed correctly
+                    rectangle.FillStyle = FillStyle.Solid
+                    rectangle.BorderColor = Color.FromArgb(101, 165, 210)               'Sets the boarder color to be orange, this will change depending on the selected instrument
+                    rectangle.FillColor = Color.Transparent                             'Sets the boarder color to be transparent
+                    rectangle.BringToFront()                                            'Brings the rectangle to the front
+                    colPlayHead.Add(rectangle)
+                Next
+            Next
+
+            scrollMeasureBox.Name = "ScrollMeasureBox"      'Sets the name of the picture box that enables the scroll bar in pnlMeasures
+            pnlMeasures.Controls.Add(scrollMeasureBox)      'Adds the picture box to pnlMeasures
+            scrollMeasureBox.SetBounds(801, 0, 80, 52)      'Sets the location and size of the picture box
+
+            For k As Integer = 1 To numTracks
+                Dim pbMute As New PictureBox
+                Dim pbSolo As New PictureBox
+                Dim trackLabel As New Label
+
+                trackManager.addTrack(colTrack.Item(k))
+                colTrack.Item(k).objMeasureManager.fillCollection(colMeasures)
+
+                changeX = 0
+                objName = "pbTrack" + k.ToString                                        'Create the pictureBox for the new track
+                Dim pictureBox As New PictureBox
+                pictureBox.Name = objName.ToString
+                pnlTrackList.Controls.Add(pictureBox)
+                pictureBox.SetBounds(0, XVAL * (k - 1), 166, 53)
+                pictureBox.Image = trackBackground
+                colPBTrack.Add(pictureBox)
+                pictureBox.BringToFront()
+                AddHandler pictureBox.Click, AddressOf pbTrack_Click
+
+                objName = "lblTrack" + k.ToString                                       'Create the new track label to display instrument
+                trackLabel.Name = objName.ToString
+                pnlTrackList.Controls.Add(trackLabel)
+                trackLabel.SetBounds(10, 18 + (XVAL * (k - 1)), 127, 16)
+                trackLabel.Text = colTrack.Item(k).soundName
+                trackLabel.BackColor = Color.FromArgb(40, 40, 40)
+                trackLabel.BringToFront()
+                colLBLTrack.Add(trackLabel)
+
+                objName = "pbMuteTrack" + k.ToString                                    'Create Mute Button for new track
+                pbMute.Name = objName.ToString
+                pnlTrackList.Controls.Add(pbMute)
+                pbMute.SetBounds(138, 1 + (XVAL * (k - 1)), 25, 23)
+                If colTrack.Item(k).mute = True Then
+                    pbMute.Image = muteDown
+                Else
+                    pbMute.Image = muteUp
+                End If
+                pbMute.BringToFront()
+                colPBMute.Add(pbMute)
+                AddHandler pbMute.Click, AddressOf pbMute_Click
+
+                objName = "pbSoloTrack" + k.ToString                                    'Create Solo Button for new track
+                pbSolo.Name = objName.ToString
+                pnlTrackList.Controls.Add(pbSolo)
+                pbSolo.SetBounds(138, 28 + (XVAL * (k - 1)), 25, 23)
+                If colTrack.Item(k).solo = True Then
+                    pbSolo.Image = soloDown
+                Else
+                    pbSolo.Image = soloUp
+                End If
+                pbSolo.BringToFront()
+                colPBSolo.Add(pbSolo)
+                AddHandler pbSolo.Click, AddressOf pbSolo_Click
+
+                Dim measurePanel As New ShapeContainer
+                pnlMeasures.Controls.Add(measurePanel)
+
+                'add number of measures to the track (visually)
+                For j As Integer = 1 To numMeasures
+                    'Create new measure object
+                    objName = "pnlTrack" + k.ToString + "Measure" + j.ToString
+                    measurePanel.Name = objName.ToString                                        'name the measure panel according to track number & measure number
+
+                    'add quarter beats for each measure. (Step 4 for naming the rectangles appropriately
+                    For i As Integer = 1 To 16 Step 4
+                        objName = "pnlTrack" + k.ToString + "Measure" + j.ToString + "Beat" + i.ToString
+                        Dim rectangle As New RectangleShape
+                        rectangle.Name = objName.ToString                                       'name beat rectangle according to track number, measure number & beat number
+                        rectangle.Parent = measurePanel                                         'make the rectangle a parent of the measurePanel
+                        rectangle.SetBounds(1 * changeX, 48 + (52 * (k - 1)), 20, 25)           'visually place the rectanle on the GUI
+                        changeX = changeX + 20                                                  'Increase the changeX incrementor
+
+                        If colTrack.Item(k).objMeasureManager.colMeasures.item(j).beat(i - 1) = True Then
+                            rectangle.FillStyle = FillStyle.Solid                                      'set fill style to solid
+                            rectangle.FillColor = Color.DarkOrange                                     'set appropriate color
+                            rectangle.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
+                        Else
+                            rectangle.BorderColor = Color.DarkOrange
+                            rectangle.FillColor = Color.Transparent
+                        End If
+                        rectangle.BringToFront()
+                        AddHandler rectangle.MouseClick, AddressOf rectBeat_Click               'Set Rectangle's handler
+                    Next
+                Next
+
+                'Create mixer Groupbox for the new track object
+                Dim mixerGroupBox As New GroupBox
+                objName = "gbTrackMixer" + k.ToString                                   'name groupbox according to TrackNumber
+                mixerGroupBox.Name = objName.ToString
+                gbMixer.Controls.Add(mixerGroupBox)                                             'add the new groupbox to the Mixer Container
+                mixerGroupBox.SetBounds(8 + (76 * (k - 1)), 22, 70, 162)                'Set the location of the groupbox
+                mixerGroupBox.BringToFront()
+
+                'Create the TrackBar for new track object
+                Dim mixerTrackBar As New TrackBar
+                objName = "tbTrackBar" + k.ToString                                     'name trackbar according to TrackNumber
+                mixerTrackBar.Name = objName.ToString
+                mixerGroupBox.Controls.Add(mixerTrackBar)                                       'add track bar to the mixerGroupBox created above            
+                mixerTrackBar.Orientation = Orientation.Vertical                                'set the Track bar's orientation
+                mixerTrackBar.SetBounds(19, 22, 45, 104)                                        'set the location of the trackbar in the groupbox
+                mixerTrackBar.Value = 5                                                         'set the track bar's default value
+                mixerTrackBar.BringToFront()
+
+                'Create track bar's mute button
+                Dim pbMixerMute As New PictureBox
+                objName = "pbMixerMute" + k.ToString
+                pbMixerMute.Name = objName.ToString                                             'name the mute button according to track number
+                mixerGroupBox.Controls.Add(pbMixerMute)                                         'add the button to the mixerGroupBox created above
+                pbMixerMute.SetBounds(9, 132, 25, 23)                                           'set the location of the trackbar in the groupbox
+                pbMixerMute.Image = muteMixerUp
+                pbMixerMute.BringToFront()
+                AddHandler pbMixerMute.Click, AddressOf pbMute_Click                            'Set the mute button's handler
+
+                'Create track bar's solo button
+                Dim pbMixerSolo As New PictureBox
+                objName = "pbMixerSolo" + k.ToString
+                pbMixerSolo.Name = objName.ToString                                             'name the mute button according to track number
+                mixerGroupBox.Controls.Add(pbMixerSolo)                                         'add the button to the mixerGroupBox created above
+                pbMixerSolo.SetBounds(35, 132, 25, 23)                                          'set the location of the trackbar in the groupbox
+                pbMixerSolo.Image = soloMixerUp
+                pbMixerSolo.BringToFront()
+                AddHandler pbMixerSolo.Click, AddressOf pbSolo_Click                            'Set the mute button's handler
+
+            Next
+        End If
     End Sub
 
     Private Sub lstInstruments_SelectedIndexChanged(sender As Object, e As EventArgs) Handles lstInstruments.SelectedIndexChanged
@@ -300,6 +485,8 @@ Public Class mainForm
                 AddHandler rectangle.MouseClick, AddressOf rectBeat_Click               'Set Rectangle's handler
             Next
         Next
+
+        track.objMeasureManager.fillCollection(colMeasures)
 
         'Create mixer Groupbox for the new track object
         Dim mixerGroupBox As New GroupBox
@@ -482,6 +669,7 @@ Public Class mainForm
                     rectangle.FillColor = Color.Transparent                             'Sets the background to be transparent
                     rectangle.BringToFront()                                            'Brings the rectangle to the front
                     AddHandler rectangle.MouseClick, AddressOf rectBeat_Click
+
                 End If
                 'Fill/Unfill Beats
             Else
@@ -523,27 +711,27 @@ Public Class mainForm
                                 If tempMeasure.Trim < 10 Then
                                     If tempMeasure.Length = 1 Then
                                         tempBeat = temp.Substring(21)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True                                       'set beat to active
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True                                       'set beat to active
                                         Else
-                                            measure.beat(tempBeat) = False                                      'set beat to inactive
+                                            measure.beat(tempBeat - 1) = False                                      'set beat to inactive
                                         End If
                                     ElseIf tempMeasure.Length = 2 Then
                                         tempBeat = temp.Substring(22)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     ElseIf tempMeasure.Length = 3 Then
                                         tempBeat = temp.Substring(23)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     End If
-                                    If measure.beat(tempBeat) = True Then
+                                    If measure.beat(tempBeat - 1) = True Then
                                         sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
                                         sender.FillColor = Color.DarkOrange                                     'set appropriate color
                                         sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
@@ -557,27 +745,27 @@ Public Class mainForm
                                 ElseIf (tempMeasure < 100) Then
                                     If tempMeasure.Length = 1 Then
                                         tempBeat = temp.Substring(22)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     ElseIf tempMeasure.Length = 2 Then
                                         tempBeat = temp.Substring(22)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     ElseIf tempMeasure.Length = 3 Then
                                         tempBeat = temp.Substring(24)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     End If
-                                    If measure.beat(tempBeat) = True Then
+                                    If measure.beat(tempBeat - 1) = True Then
                                         sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
                                         sender.FillColor = Color.DarkOrange                                     'set appropriate color
                                         sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
@@ -591,27 +779,27 @@ Public Class mainForm
                                 Else
                                     If tempMeasure.Length = 1 Then
                                         tempBeat = temp.Substring(23)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     ElseIf tempMeasure.Length = 2 Then
                                         tempBeat = temp.Substring(24)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     ElseIf tempMeasure.Length = 3 Then
                                         tempBeat = temp.Substring(25)
-                                        If measure.beat(tempBeat) = False Then
-                                            measure.beat(tempBeat) = True
+                                        If measure.beat(tempBeat - 1) = False Then
+                                            measure.beat(tempBeat - 1) = True
                                         Else
-                                            measure.beat(tempBeat) = False
+                                            measure.beat(tempBeat - 1) = False
                                         End If
                                     End If
-                                    If measure.beat(tempBeat) = True Then
+                                    If measure.beat(tempBeat - 1) = True Then
                                         sender.FillStyle = FillStyle.Solid                                      'set fill style to solid
                                         sender.FillColor = Color.DarkOrange                                     'set appropriate color
                                         sender.BorderColor = Color.FromArgb(40, 40, 40)                         'set border color to color of panel's background (make it transparent)
@@ -809,6 +997,7 @@ Public Class mainForm
             playPressed = False
             sender.image = playImage
         ElseIf playPressed = False Then
+            lnPlayHead.Visible = True
             pbStop.Enabled = False
             pbStop.Visible = False
             playPressed = True
@@ -818,15 +1007,21 @@ Public Class mainForm
 
             For j As Integer = playHead To colPlayHead.Count
                 colPlayHead.Item(j).FillColor = Color.FromArgb(101, 165, 210)                                                           'Fill the playhead rectangle
+                lnPlayHead.X1 = colPlayHead.Item(j).left + 2.5
+                lnPlayHead.X2 = colPlayHead.Item(j).left + 2.5
                 pnlMeasures.AutoScrollPosition = New Point(((colPlayHead.Item(j).Left - 250)), colPlayHead.Item(j).Top)                 'Scroll the panel with the playhead
                 'start sound
                 For Each track In colTrack
-                    measureNumber = (j \ 17)
+                    measureNumber = (j \ 16)
+                    If (j \ 16) = numMeasures Then
+                        measureNumber = measureNumber - 1
+                    End If
                     beatNumber = (j Mod 16)
                     If beatNumber = 0 Then
                         beatNumber = 16
                     End If
-                    If (track.objMeasureManager.colMeasures.Item(measureNumber + 1).beat(beatNumber) = True) Then
+                    If (track.objMeasureManager.colMeasures.Item(measureNumber + 1).beat(beatNumber - 1) = True) Then
+                        'Checks that a sound is selected for each track
                         If track.soundName = "null" Then
                             MessageBox.Show("Please select a sound for track " & track.trackNumber & ".")
                             For Each RectangleShape In colPlayHead
@@ -880,9 +1075,11 @@ Public Class mainForm
     Private Sub pbStop_Click(sender As Object, e As EventArgs) Handles pbStop.Click
         If playPressed = False Then
             For Each RectangleShape In colPlayHead
+                lnPlayHead.Visible = False
                 RectangleShape.FillColor = Color.Transparent
                 playHead = 1
             Next
+            pbPlay.Visible = True
         End If
     End Sub
 
@@ -953,11 +1150,18 @@ Public Class mainForm
         If playPressed = False Then
             If playHead > 16 Then
                 playHead = playHead - 16
+
+                'start over playhead rectangles
                 For j As Integer = 1 To colPlayHead.Count
                     colPlayHead.Item(j).FillColor = Color.Transparent
                 Next
+                'fill the appropriate rectangles
                 For j As Integer = 1 To playHead
                     colPlayHead.Item(j).FillColor = Color.FromArgb(101, 165, 210)
+                    lnPlayHead.Visible = True                                                                       'Set playhead line to visible
+                    'move playhead line
+                    lnPlayHead.X1 = colPlayHead.Item(j).Left + 2.5
+                    lnPlayHead.X2 = colPlayHead.Item(j).Left + 2.5
                 Next
             Else
                 playHead = 1
@@ -972,11 +1176,18 @@ Public Class mainForm
         If playPressed = False Then
             If playHead < (colPlayHead.Count - 16) Then
                 playHead = playHead + 16
+
+                'start over playhead rectangles
                 For j As Integer = 1 To colPlayHead.Count
                     colPlayHead.Item(j).FillColor = Color.Transparent
                 Next
+                'fill the appropriate rectangles
                 For j As Integer = 1 To playHead
                     colPlayHead.Item(j).FillColor = Color.FromArgb(101, 165, 210)
+                    lnPlayHead.Visible = True                                                                       'Set playhead line to visible
+                    'move playhead line
+                    lnPlayHead.X1 = colPlayHead.Item(j).Left + 2.5
+                    lnPlayHead.X2 = colPlayHead.Item(j).Left + 2.5
                 Next
             Else
                 playHead = colPlayHead.Count
@@ -985,5 +1196,10 @@ Public Class mainForm
                 Next
             End If
         End If
+    End Sub
+
+    Private Sub SaveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveToolStripMenuItem.Click
+        objFileManager.saveAlgoRhythm(numTracks, numMeasures, colTrack)
+        MessageBox.Show("File successfully saved!")
     End Sub
 End Class
