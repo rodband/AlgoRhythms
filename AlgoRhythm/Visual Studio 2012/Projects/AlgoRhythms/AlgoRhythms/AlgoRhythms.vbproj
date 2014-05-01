@@ -71,17 +71,17 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="clsMixerModuleManager.vb" />
     <Compile Include="clsFileManager.vb" />
-    <Compile Include="clsInstrument.vb" />
-    <Compile Include="clsInstrumentManager.vb" />
-    <Compile Include="clsPlayhead.vb" />
     <Compile Include="clsTrack.vb" />
     <Compile Include="clsTrackManager.vb" />
     <Compile Include="clsMeasure.vb" />
     <Compile Include="clsMeasureManager.vb" />
-    <Compile Include="clsMixerModule.vb" />
-    <Compile Include="clsSoundLibraryManager.vb" />
+    <Compile Include="helpForm.Designer.vb">
+      <DependentUpon>helpForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="helpForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="mainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -106,6 +106,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="helpForm.resx">
+      <DependentUpon>helpForm.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="mainForm.resx">
       <DependentUpon>mainForm.vb</DependentUpon>
     </EmbeddedResource>

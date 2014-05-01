@@ -1,0 +1,4 @@
+60
+1
+10
+Simple Kick, False, False, False True False False False True False False False True False False False True False False False False False False False False False False False False True True False True False False False False False False False False False False False False False False False False False False False False False True False False False False False True False True False False False False True False True False True False True False True False True False True False True False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False False 

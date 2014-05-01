@@ -58,3 +58,4 @@ H:\SE461\AlgoRhythms-master\AlgoRhythms-master\AlgoRhythm\Visual Studio 2012\Pro
 H:\SE461\AlgoRhythms-master\AlgoRhythms-master\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\obj\Debug\AlgoRhythms.mainForm.resources
 H:\SE461\AlgoRhythms-master\AlgoRhythms-master\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\obj\Debug\AlgoRhythms.Resources.resources
 H:\SE461\AlgoRhythms-master\AlgoRhythms-master\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\obj\Debug\AlgoRhythms.vbproj.GenerateResource.Cache
+H:\SE461\AlgoRhythm\Visual Studio 2012\Projects\AlgoRhythms\AlgoRhythms\obj\Debug\AlgoRhythms.helpForm.resources

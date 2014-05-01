@@ -3,13 +3,14 @@
 Public Class clsFileManager
     Private strFileName As String
 
-    Public Sub saveAlgoRhythm(ByVal numT As Integer, ByVal numM As Integer, ByVal colTracks As Collection)
+    Public Sub saveAlgoRhythm(ByVal tempo As String, ByVal numT As Integer, ByVal numM As Integer, ByVal colTracks As Collection, ByVal fn As String)
         Dim objAlgoRhythmsFile As StreamWriter
-        strFileName = "Track_1.txt"
+        strFileName = fn + ".txt"
         File.Replace(strFileName, "Clear.txt", "Dumpster.txt")
 
         objAlgoRhythmsFile = File.AppendText(strFileName)
 
+        objAlgoRhythmsFile.WriteLine(tempo)
         objAlgoRhythmsFile.WriteLine(numT)
         objAlgoRhythmsFile.WriteLine(numM)
 
@@ -38,18 +39,19 @@ Public Class clsFileManager
         objAlgoRhythmsFile.Close()
     End Sub
 
-    Public Sub loadAlgoRhythm(ByRef numT As Integer, ByRef numM As Integer, ByRef colTracks As Collection, ByVal fileName As String)
+    Public Sub loadAlgoRhythm(ByRef tempo As Integer, ByRef numT As Integer, ByRef numM As Integer, ByRef colTracks As Collection, ByVal fn As String)
         Dim objAlgoRhythmsFile As StreamReader
         Dim currentLine As String
         Dim soundN As String
         Dim boolM As String
         Dim boolS As String
-
+        Dim strFileName = fn & ".txt"
         Try
-            objAlgoRhythmsFile = File.OpenText(fileName)
+            objAlgoRhythmsFile = File.OpenText(strFileName)
 
             Dim i As Integer
             i = 1
+            tempo = CInt(objAlgoRhythmsFile.ReadLine)
             numT = CInt(objAlgoRhythmsFile.ReadLine)
             numM = CInt(objAlgoRhythmsFile.ReadLine)
             While objAlgoRhythmsFile.Peek <> -1

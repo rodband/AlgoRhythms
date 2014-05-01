@@ -31,7 +31,7 @@ Partial Class mainForm
         Me.SaveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SaveAsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BounceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.menuEdit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CloseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.menuHelp = New System.Windows.Forms.ToolStripMenuItem()
         Me.gbInstrumentSelector = New System.Windows.Forms.GroupBox()
         Me.lstSounds = New System.Windows.Forms.ListBox()
@@ -43,6 +43,8 @@ Partial Class mainForm
         Me.lblDeleteTrack = New System.Windows.Forms.Label()
         Me.pnlTrackList = New System.Windows.Forms.Panel()
         Me.pnlMeasures = New System.Windows.Forms.Panel()
+        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
+        Me.lnPlayHead = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.pbPlay = New System.Windows.Forms.PictureBox()
         Me.pbStepForward = New System.Windows.Forms.PictureBox()
         Me.pbStepBack = New System.Windows.Forms.PictureBox()
@@ -50,17 +52,9 @@ Partial Class mainForm
         Me.lblAddTrack = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
         Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.Panel5 = New System.Windows.Forms.Panel()
-        Me.ShapeContainer5 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.RectangleShape60 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape61 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape63 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
-        Me.RectangleShape64 = New Microsoft.VisualBasic.PowerPacks.RectangleShape()
         Me.gbMixer = New System.Windows.Forms.GroupBox()
         Me.ilTrackList = New System.Windows.Forms.ImageList(Me.components)
         Me.tmrPlayHead = New System.Windows.Forms.Timer(Me.components)
-        Me.ShapeContainer2 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.lnPlayHead = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.MenuStrip1.SuspendLayout()
         Me.gbInstrumentSelector.SuspendLayout()
         Me.gbMain.SuspendLayout()
@@ -69,14 +63,13 @@ Partial Class mainForm
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbStop, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Panel5.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
         '
         Me.MenuStrip1.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.MenuStrip1.Font = New System.Drawing.Font("Tahoma", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuFile, Me.menuEdit, Me.menuHelp})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuFile, Me.menuHelp})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Size = New System.Drawing.Size(1061, 26)
@@ -86,7 +79,7 @@ Partial Class mainForm
         'menuFile
         '
         Me.menuFile.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
-        Me.menuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewProjectToolStripMenuItem, Me.OpenProjectToolStripMenuItem, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.BounceToolStripMenuItem})
+        Me.menuFile.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewProjectToolStripMenuItem, Me.OpenProjectToolStripMenuItem, Me.SaveToolStripMenuItem, Me.SaveAsToolStripMenuItem, Me.BounceToolStripMenuItem, Me.CloseToolStripMenuItem})
         Me.menuFile.Font = New System.Drawing.Font("Tahoma", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.menuFile.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
         Me.menuFile.Name = "menuFile"
@@ -133,13 +126,13 @@ Partial Class mainForm
         Me.BounceToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
         Me.BounceToolStripMenuItem.Text = "Bounce"
         '
-        'menuEdit
+        'CloseToolStripMenuItem
         '
-        Me.menuEdit.Font = New System.Drawing.Font("Tahoma", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.menuEdit.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
-        Me.menuEdit.Name = "menuEdit"
-        Me.menuEdit.Size = New System.Drawing.Size(49, 22)
-        Me.menuEdit.Text = "Edit"
+        Me.CloseToolStripMenuItem.BackColor = System.Drawing.Color.FromArgb(CType(CType(52, Byte), Integer), CType(CType(52, Byte), Integer), CType(CType(52, Byte), Integer))
+        Me.CloseToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(CType(CType(101, Byte), Integer), CType(CType(165, Byte), Integer), CType(CType(210, Byte), Integer))
+        Me.CloseToolStripMenuItem.Name = "CloseToolStripMenuItem"
+        Me.CloseToolStripMenuItem.Size = New System.Drawing.Size(173, 22)
+        Me.CloseToolStripMenuItem.Text = "Close"
         '
         'menuHelp
         '
@@ -265,12 +258,33 @@ Partial Class mainForm
         'pnlMeasures
         '
         Me.pnlMeasures.AutoScroll = True
+        Me.pnlMeasures.AutoScrollMinSize = New System.Drawing.Size(100, 0)
         Me.pnlMeasures.BackColor = System.Drawing.Color.Transparent
         Me.pnlMeasures.Controls.Add(Me.ShapeContainer2)
         Me.pnlMeasures.Location = New System.Drawing.Point(202, 9)
         Me.pnlMeasures.Name = "pnlMeasures"
         Me.pnlMeasures.Size = New System.Drawing.Size(563, 337)
         Me.pnlMeasures.TabIndex = 13
+        '
+        'ShapeContainer2
+        '
+        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
+        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
+        Me.ShapeContainer2.Name = "ShapeContainer2"
+        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.lnPlayHead})
+        Me.ShapeContainer2.Size = New System.Drawing.Size(563, 337)
+        Me.ShapeContainer2.TabIndex = 0
+        Me.ShapeContainer2.TabStop = False
+        '
+        'lnPlayHead
+        '
+        Me.lnPlayHead.BorderColor = System.Drawing.Color.GreenYellow
+        Me.lnPlayHead.Name = "lnPlayHead"
+        Me.lnPlayHead.Visible = False
+        Me.lnPlayHead.X1 = 10
+        Me.lnPlayHead.X2 = 10
+        Me.lnPlayHead.Y1 = 12
+        Me.lnPlayHead.Y2 = 325
         '
         'pbPlay
         '
@@ -344,68 +358,6 @@ Partial Class mainForm
         Me.LineShape1.Y1 = 336
         Me.LineShape1.Y2 = 336
         '
-        'Panel5
-        '
-        Me.Panel5.Controls.Add(Me.ShapeContainer5)
-        Me.Panel5.Location = New System.Drawing.Point(969, 582)
-        Me.Panel5.Name = "Panel5"
-        Me.Panel5.Size = New System.Drawing.Size(80, 52)
-        Me.Panel5.TabIndex = 13
-        '
-        'ShapeContainer5
-        '
-        Me.ShapeContainer5.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer5.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer5.Name = "ShapeContainer5"
-        Me.ShapeContainer5.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.RectangleShape60, Me.RectangleShape61, Me.RectangleShape63, Me.RectangleShape64})
-        Me.ShapeContainer5.Size = New System.Drawing.Size(80, 52)
-        Me.ShapeContainer5.TabIndex = 0
-        Me.ShapeContainer5.TabStop = False
-        '
-        'RectangleShape60
-        '
-        Me.RectangleShape60.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.RectangleShape60.BorderColor = System.Drawing.Color.Black
-        Me.RectangleShape60.FillColor = System.Drawing.Color.DarkOrange
-        Me.RectangleShape60.FillGradientColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.RectangleShape60.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.RectangleShape60.Location = New System.Drawing.Point(60, 13)
-        Me.RectangleShape60.Name = "RectangleShape12"
-        Me.RectangleShape60.Size = New System.Drawing.Size(20, 25)
-        '
-        'RectangleShape61
-        '
-        Me.RectangleShape61.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.RectangleShape61.BorderColor = System.Drawing.Color.Black
-        Me.RectangleShape61.FillColor = System.Drawing.Color.DarkOrange
-        Me.RectangleShape61.FillGradientColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.RectangleShape61.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.RectangleShape61.Location = New System.Drawing.Point(40, 13)
-        Me.RectangleShape61.Name = "RectangleShape11"
-        Me.RectangleShape61.Size = New System.Drawing.Size(20, 25)
-        '
-        'RectangleShape63
-        '
-        Me.RectangleShape63.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.RectangleShape63.BorderColor = System.Drawing.Color.Black
-        Me.RectangleShape63.FillColor = System.Drawing.Color.DarkOrange
-        Me.RectangleShape63.FillGradientColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.RectangleShape63.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.RectangleShape63.Location = New System.Drawing.Point(20, 13)
-        Me.RectangleShape63.Name = "RectangleShape9"
-        Me.RectangleShape63.Size = New System.Drawing.Size(20, 25)
-        '
-        'RectangleShape64
-        '
-        Me.RectangleShape64.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.RectangleShape64.BorderColor = System.Drawing.Color.Black
-        Me.RectangleShape64.FillColor = System.Drawing.Color.DarkOrange
-        Me.RectangleShape64.FillGradientColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.RectangleShape64.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.RectangleShape64.Location = New System.Drawing.Point(0, 13)
-        Me.RectangleShape64.Name = "RectangleShape2"
-        Me.RectangleShape64.Size = New System.Drawing.Size(20, 25)
-        '
         'gbMixer
         '
         Me.gbMixer.Enabled = False
@@ -424,33 +376,12 @@ Partial Class mainForm
         Me.ilTrackList.TransparentColor = System.Drawing.Color.Transparent
         Me.ilTrackList.Images.SetKeyName(0, "trackBackground.bmp")
         '
-        'ShapeContainer2
-        '
-        Me.ShapeContainer2.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer2.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer2.Name = "ShapeContainer2"
-        Me.ShapeContainer2.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.lnPlayHead})
-        Me.ShapeContainer2.Size = New System.Drawing.Size(563, 337)
-        Me.ShapeContainer2.TabIndex = 0
-        Me.ShapeContainer2.TabStop = False
-        '
-        'lnPlayHead
-        '
-        Me.lnPlayHead.BorderColor = System.Drawing.Color.Chartreuse
-        Me.lnPlayHead.Name = "lnPlayHead"
-        Me.lnPlayHead.Visible = False
-        Me.lnPlayHead.X1 = 10
-        Me.lnPlayHead.X2 = 10
-        Me.lnPlayHead.Y1 = 12
-        Me.lnPlayHead.Y2 = 325
-        '
         'mainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer), CType(CType(48, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1061, 659)
-        Me.Controls.Add(Me.Panel5)
         Me.Controls.Add(Me.gbMain)
         Me.Controls.Add(Me.gbMixer)
         Me.Controls.Add(Me.gbInstrumentSelector)
@@ -470,7 +401,6 @@ Partial Class mainForm
         CType(Me.pbStepForward, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStepBack, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbStop, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Panel5.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -482,7 +412,6 @@ Partial Class mainForm
     Friend WithEvents SaveToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents SaveAsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents BounceToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents menuEdit As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents menuHelp As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents gbInstrumentSelector As System.Windows.Forms.GroupBox
     Friend WithEvents lstInstruments As System.Windows.Forms.ListBox
@@ -500,17 +429,12 @@ Partial Class mainForm
     Friend WithEvents pbStop As System.Windows.Forms.PictureBox
     Friend WithEvents tmrPlayHead As System.Windows.Forms.Timer
     Friend WithEvents pnlMeasures As System.Windows.Forms.Panel
-    Friend WithEvents Panel5 As System.Windows.Forms.Panel
-    Friend WithEvents ShapeContainer5 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents RectangleShape60 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape61 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape63 As Microsoft.VisualBasic.PowerPacks.RectangleShape
-    Friend WithEvents RectangleShape64 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents lblDeleteTrack As System.Windows.Forms.Label
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents txtTempo As System.Windows.Forms.TextBox
     Friend WithEvents lblAddMeasure As System.Windows.Forms.Label
     Friend WithEvents ShapeContainer2 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
     Friend WithEvents lnPlayHead As Microsoft.VisualBasic.PowerPacks.LineShape
+    Friend WithEvents CloseToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class
